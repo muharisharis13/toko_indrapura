@@ -37,7 +37,7 @@ class M_barang extends CI_Model
 
 	function get_list_kode_barang()
 	{
-		return $this->db->query("SELECT barang_id,barang_nama FROM tbl_barang");
+		return $this->db->query("SELECT barang_id,barang_nama,barang_stok FROM tbl_barang");
 	}
 
 	function get_kobar()

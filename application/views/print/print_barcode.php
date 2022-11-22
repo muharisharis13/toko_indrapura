@@ -32,18 +32,21 @@
   </style>
 </head>
 
-<body>
+<body style="margin:0;padding:0;box-sizing:border-box">
 
   <div class="custom_container">
     <?php
-    foreach ($data_barang_id as $item) :
-
+    foreach ($data_barang_id as $item) {
+      for ($x = 0; $x < $item['barang_stok']; $x++) {
     ?>
-      <div class="col-lg-3" style="border:1px solid black;padding:10px;">
-        <img src="<?php echo base_url('admin/barang/initBarcode/' . $item['barang_id']); ?>" alt="">
-        <?= $item["barang_id"] ?>
-      </div>
-    <?php endforeach ?>
+        <div style="border:1px solid black;padding:10px;">
+          <img src="<?php echo base_url('admin/barang/initBarcode/' . $item['barang_id']); ?>" alt="">
+          <?= $item["barang_id"] ?>
+        </div>
+
+    <?php
+      }
+    } ?>
 
   </div>
   <script>

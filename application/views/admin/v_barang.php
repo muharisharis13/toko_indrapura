@@ -1123,6 +1123,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#mydata').DataTable();
+            $("div.dataTables_filter input").focus();
         });
     </script>
     <script type="text/javascript">

@@ -103,12 +103,12 @@
                         <tr>
                             <th>Tunai(Rp)</th>
                             <th style="text-align:right;"><input type="text" id="jml_uang" name="jml_uang" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
-                            <input type="hidden" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required>
+                            <!-- <input type="text" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required> -->
                         </tr>
                         <tr>
                             <td></td>
                             <th>Kembalian(Rp)</th>
-                            <th style="text-align:right;"><input type="text" id="kembalian" name="kembalian" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
+                            <th style="text-align:right;"><input disabled type="text" id="kembalian" name="kembalian" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
                         </tr>
 
                     </table>
@@ -225,10 +225,11 @@
             $(function() {
                 $('#jml_uang').on("input", function() {
                     var total = $('#total').val();
+                    var newTotal = total.replace(/[^\d]/g, "");
                     var jumuang = $('#jml_uang').val();
                     var hsl = jumuang.replace(/[^\d]/g, "");
                     $('#jml_uang2').val(hsl);
-                    $('#kembalian').val(hsl - total);
+                    $('#kembalian').val(hsl - newTotal);
                 })
 
             });
