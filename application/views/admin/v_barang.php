@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Produk By Mfikri.com">
-    <meta name="author" content="M Fikri Setiadi">
+    <meta name="author" content="Mesproject">
 
     <title>Management data barang</title>
 
@@ -37,7 +37,13 @@
             <div class="col-lg-12">
                 <h1 class="page-header">Data
                     <small>Barang</small>
-                    <div class="pull-right"><a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#largeModal"><span class="fa fa-plus"></span> Tambah Barang</a></div>
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#largeModal"><span class="fa fa-plus"></span> Tambah Barang</a>
+                        <a href="<?php echo base_url("admin/barang/print_barcode") ?>" class="btn btn-sm btn-info">
+                            <i class="fa fa-print"></i>
+                            Cetak Barcode
+                        </a>
+                    </div>
                 </h1>
             </div>
         </div>
@@ -64,6 +70,7 @@
                     <tbody>
                         <?php
                         $no = 0;
+
                         foreach ($data->result_array() as $a) :
                             $no++;
                             $id = $a['barang_id'];
@@ -88,9 +95,13 @@
                                 <td style="text-align:center;"><?php echo $stok; ?></td>
                                 <td style="text-align:center;"><?php echo $min_stok; ?></td>
                                 <td><?php echo $kat_nama; ?></td>
-                                <td style="text-align:center;">
-                                    <a class="btn btn-xs btn-warning" href="#modalEditPelanggan<?php echo $id ?>" data-toggle="modal" title="Edit"><span class="fa fa-edit"></span> Edit</a>
-                                    <a class="btn btn-xs btn-danger" href="#modalHapusPelanggan<?php echo $id ?>" data-toggle="modal" title="Hapus"><span class="fa fa-close"></span> Hapus</a>
+                                <td style='display:flex;gap:10px;'>
+                                    <a class="btn btn-xs btn-warning" href="#modalEditPelanggan<?php echo $id ?>" data-toggle="modal" title="Edit">
+                                        <span class="fa fa-edit"></span> Edit
+                                    </a>
+                                    <a class="btn btn-xs btn-danger" href="#modalHapusPelanggan<?php echo $id ?>" data-toggle="modal" title="Hapus">
+                                        <span class="fa fa-close"></span> Hapus
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -210,6 +221,9 @@
                             </div>
 
 
+
+
+
                         </div>
 
                         <div class="modal-footer">
@@ -235,7 +249,7 @@
             $kat_id = $a['barang_kategori_id'];
             $kat_nama = $a['kategori_nama'];
         ?>
-            <div id="modalEditPelanggan<?php echo $id ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+            <div id="modalEditPelanggan<?php echo $id; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -1023,6 +1037,14 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group mt-4">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-center">
+                                            <img src="<?php echo base_url('admin/barang/initBarcode/' . $id); ?>" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
@@ -1080,7 +1102,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p style="text-align:center;">Copyright &copy; <?php echo '2017'; ?> by M Fikri Setiadi</p>
+                    <p style="text-align:center;">Copyright &copy; <?php echo '2017'; ?> by Mesproject</p>
                 </div>
             </div>
             <!-- /.row -->

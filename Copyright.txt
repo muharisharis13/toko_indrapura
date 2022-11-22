@@ -1,6 +1,6 @@
 Soucode ini dibangun dan dirancang oleh:
 
-Programmer: M Fikri Setiadi
+Programmer: Mesproject
 Tahun 	  : 2017
 Website   : www.mfikri.com 
 Email     : setiadi@mfikri.com
