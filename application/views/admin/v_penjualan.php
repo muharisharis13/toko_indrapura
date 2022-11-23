@@ -82,7 +82,12 @@
                                 <td style="text-align:center;"><?= $items['satuan']; ?></td>
                                 <td style="text-align:right;"><?php echo number_format($items['amount']); ?></td>
                                 <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td>
-                                <td style="text-align:center;"><?php echo number_format($items['qty']); ?></td>
+                                <td style="text-align:center;">
+                                    <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post">
+                                        <input type="hidden" value="<?= $items['id'] ?>" name="update_kobar">
+                                        <input type="text" name="update_qty" value="<?php echo number_format($items['qty']); ?>">
+                                    </form>
+                                </td>
                                 <td style="text-align:right;"><?php echo number_format($items['subtotal']); ?></td>
 
                                 <td style="text-align:center;"><a href="<?php echo base_url() . 'admin/penjualan/remove/' . $items['rowid']; ?>" class="btn btn-warning btn-xs"><span class="fa fa-close"></span> Batal</a></td>
@@ -141,7 +146,7 @@
                                 <tbody>
                                     <?php
                                     $no = 0;
-                                    foreach ($data->result_array() as $a) :
+                                    foreach ($cari->result_array() as $a) :
                                         $no++;
                                         $id = $a['barang_id'];
                                         $nm = $a['barang_nama'];
@@ -236,7 +241,7 @@
         </script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#mydata').DataTable();
+                let table = $('#mydata').DataTable();
             });
         </script>
         <script type="text/javascript">

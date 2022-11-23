@@ -17,6 +17,7 @@ class Penjualan extends CI_Controller
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
 			$data['data'] = $this->m_barang->tampil_barang();
+			$data['cari'] = $this->m_barang->cari_barang();
 			$this->load->view('admin/v_penjualan', $data);
 		} else {
 			echo "Halaman tidak ditemukan";
@@ -32,6 +33,30 @@ class Penjualan extends CI_Controller
 			echo "Halaman tidak ditemukan";
 		}
 	}
+	function get_barang1()
+	{
+
+		$kobar = $this->input->post('kode_brg');
+		$this->m_barang->get_barang($kobar);
+		$this->add_to_cart();
+	}
+	function updateQty()
+	{
+		$kobar = $this->input->post('update_kobar');
+		$qty = $this->input->post('update_qty');
+		foreach ($this->cart->contents() as $items) {
+			$id = $items['id'];
+			$rowid = $items['rowid'];
+			if ($id == $kobar) {
+				$up = array(
+					'rowid' => $rowid,
+					'qty' => $qty
+				);
+				$this->cart->update($up);
+			}
+		}
+		redirect('admin/penjualan');
+	}
 	function add_to_cart()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
@@ -43,10 +68,11 @@ class Penjualan extends CI_Controller
 				'name'     => $i['barang_nama'],
 				'satuan'   => $i['barang_satuan'],
 				'harpok'   => $i['barang_harpok'],
-				'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
+				'price'    => $i['barang_harjul'],
+				// 'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
 				'disc'     => $this->input->post('diskon'),
-				'qty'      => $this->input->post('qty'),
-				'amount'	  => str_replace(",", "", $this->input->post('harjul'))
+				'qty'      => 1,
+				'amount'	  => $i['barang_harjul'],
 			);
 
 			if (!empty($this->cart->total_items())) {
@@ -55,7 +81,7 @@ class Penjualan extends CI_Controller
 					$qtylama = $items['qty'];
 					$rowid = $items['rowid'];
 					$kobar = $this->input->post('kode_brg');
-					$qty = $this->input->post('qty');
+					$qty = 1;
 					if ($id == $kobar) {
 						$up = array(
 							'rowid' => $rowid,

@@ -20,6 +20,15 @@ class M_barang extends CI_Model
 		$hsl = $this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,kategori_nama FROM tbl_barang JOIN tbl_kategori ON barang_kategori_id=kategori_id");
 		return $hsl;
 	}
+	function cari_barang()
+	{
+		$this->db->select('*');
+		$this->db->from('tbl_barang');
+		$this->db->where('barang_stok >', 0);
+		$this->db->join('tbl_kategori', 'tbl_kategori.kategori_id=tbl_barang.barang_kategori_id');
+		$data = $this->db->get();
+		return $data;
+	}
 
 	function simpan_barang($kobar, $nabar, $kat, $satuan, $harpok, $harjul, $harjul_grosir, $stok, $min_stok)
 	{
