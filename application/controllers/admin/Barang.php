@@ -10,6 +10,7 @@ class Barang extends CI_Controller
 		};
 		$this->load->model('m_kategori');
 		$this->load->model('m_barang');
+		$this->load->model('m_satuan');
 		$this->load->library('Zend');
 	}
 	function index()
@@ -18,6 +19,7 @@ class Barang extends CI_Controller
 			$data['data'] = $this->m_barang->tampil_barang();
 			$data['kat'] = $this->m_kategori->tampil_kategori();
 			$data['kat2'] = $this->m_kategori->tampil_kategori();
+			$data['satuan_baru'] = $this->m_satuan->get_satuan();
 			$this->load->view('admin/v_barang', $data);
 		} else {
 			echo "Halaman tidak ditemukan";

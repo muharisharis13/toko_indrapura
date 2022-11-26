@@ -1,37 +1,46 @@
 body{
-        font-family: arial,sans-serif;
-		font-size:11px;
-		margin:3px;
-		}
-		#laporan{
-		color:black;
-		padding:6px 2px;
-		}
-		#laporan table{
-		border-collapse:collapse;
-		border: 1px solid;
-		font-size:11px;
-		}
-		#laporan table th{
-		background:F1E7E8;
-		font-weight:bold;
-		vertical-align:middle;
-		}
+    font-family: arial,sans-serif;
+		font-size:12px;
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+		display: flex;
+		
+		width: 150px;
+	}
 
-		#laporan table td{
-		background:c8bfbf;
-		}
+	.container{
+		overflow: hidden;
+	}
 
-		#laporan table bp{
-		border:black;
-		}
-		.pagebreak{
-		visibility:visible;
-		page-break-after:always;
-		}
-		.garis{
-			border:solid 1px;
-		}
-		.nongaris{
-			border: none;
-		}
+	.header{
+		text-align: center;
+	}
+
+.name_shop{
+	text-align: center;
+		font-size: 16pt;
+		font-weight: 700;
+}
+
+.address_shop{
+	text-align: center;
+}
+
+.line{
+	margin-top: 10px;
+	height: 1px;
+	width: 100%;
+	border-bottom: 1px dashed #ccc;
+}
+
+.content .table{
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+}
+
+
+.see-you{
+	padding-top:20px !important;
+}
