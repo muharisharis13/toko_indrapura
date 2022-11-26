@@ -89,6 +89,6 @@ class M_penjualan extends CI_Model
 
 	function get_penjualan_terlaris()
 	{
-		return $this->db->query("Select * from tbl_detail_jual");
+		return $this->db->query("SELECT d_jual_barang_id,d_jual_barang_nama , SUM(d_jual_qty) as total_qty FROM `tbl_detail_jual` GROUP BY d_jual_barang_id ORDER BY total_qty DESC");
 	}
 }

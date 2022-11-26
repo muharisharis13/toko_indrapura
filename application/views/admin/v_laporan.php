@@ -237,9 +237,9 @@
                         <div class="modal-body">
 
                             <div class="form-group">
-                                <label class="control-label col-xs-3">Bulan</label>
+                                <label class="control-label col-xs-3">Dari Bulan</label>
                                 <div class="col-xs-9">
-                                    <select name="bln" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
+                                    <select name="bln_dari" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
                                     <?php foreach ($jual_bln->result_array() as $k) {
                                         $bln = $k['bulan'];
                                     ?>
@@ -248,7 +248,18 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="control-label col-xs-3">Ke Bulan</label>
+                                <div class="col-xs-9">
+                                    <select name="bln_ke" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
+                                    <?php foreach ($jual_bln->result_array() as $k) {
+                                        $bln = $k['bulan'];
+                                    ?>
+                                        <option><?php echo $bln; ?></option>
+                                    <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
                         </div>
 

@@ -52,7 +52,7 @@
             </td>
             <td>
               <?php
-              echo $item['d_jual_qty']
+              echo $item['total_qty']
               ?>
             </td>
           </tr>

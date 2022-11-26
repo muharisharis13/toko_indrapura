@@ -56,9 +56,53 @@ class Laporan extends CI_Controller{
 		$this->load->view('admin/laporan/v_lap_jual_pertahun',$x);
 	}
 	function lap_laba_rugi(){
-		$bulan=$this->input->post('bln');
-		$x['jml']=$this->m_laporan->get_total_lap_laba_rugi($bulan);
-		$x['data']=$this->m_laporan->get_lap_laba_rugi($bulan);
+		$bulan_dari=$this->input->post('bln_dari');
+		$bulan_ke=$this->input->post('bln_ke');
+		// Pecah jadi Bulan dan Tahun
+		$bln_awal = $this->formatDateLaporanLabaRugi($bulan_dari,'bulan');
+		$thn_awal = $this->formatDateLaporanLabaRugi($bulan_dari,'tahun');
+		$bln_akhir = $this->formatDateLaporanLabaRugi($bulan_ke,'bulan');
+		$thn_akhir = $this->formatDateLaporanLabaRugi($bulan_ke,'tahun');
+
+		// Simpan data Sementara
+		$thn_awal_dump = $thn_awal;
+		$thn_akhir_dump = $thn_akhir;
+		$bln_awal_dump = $bln_awal;
+		$bln_akhir_dump = $bln_akhir;
+
+		// Cek Jika Tahun Akhir > Tahun Awal , di ganti karena data tidak muncul jika Data Besar dulu , baru data kecil, untuk bulan disesuaikan dengan tahun yang ditukar
+		if($thn_awal > $thn_akhir){
+			$thn_akhir = $thn_awal_dump;
+			$thn_awal = $thn_akhir_dump;
+
+			$bln_awal = $bln_akhir_dump;
+			$bln_akhir= $bln_awal_dump;
+		}
+
+		$x['jml']=$this->m_laporan->get_total_lap_laba_rugi($thn_awal,$thn_akhir,$bln_awal,$bln_akhir);
+		$x['data']=$this->m_laporan->get_lap_laba_rugi($thn_awal,$thn_akhir,$bln_awal,$bln_akhir);
 		$this->load->view('admin/laporan/v_lap_laba_rugi',$x);
 	}
+
+	// Fungsi untuk keperluan tanggal laporan laba rugi
+	function formatDateLaporanLabaRugi($date_str,$type){
+		// date str -> November 2016
+		$str = explode(" ",$date_str);
+
+		// explode -> array([0]=>November,[1]=>2016)
+		$date = "";
+		if($type == "bulan"){
+			// change name of month to number of month
+			$date = date("m",strtotime($str[0]));
+			
+		}
+		if($type == "tahun"){
+			
+			$date = $str[1];
+		}
+		return $date;
+
+	}
+
+	
 }

@@ -43,5 +43,11 @@ class Grafik extends CI_Controller{
 		$x['thn']=$tahun;
 		$this->load->view('admin/grafik/v_graf_penjualan_pertahun',$x);
 	}
+	function graf_laba_rugi(){
+		$bulan=$this->input->post('bln');
+		$x['report']=$this->m_grafik->graf_laba_rugi($bulan);
+		$x['bln']=$bulan;
+		$this->load->view('admin/grafik/v_graf_laba_rugi',$x);
+	}
 	
 }
