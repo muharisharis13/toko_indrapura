@@ -32,7 +32,7 @@
 </head>
 
 <body>
-      <!-- <img src="https://images.unsplash.com/photo-1623063204455-3729f5ca0232?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1994&q=80" alt="gambar" class="bg" /> -->
+      <img src="<?= base_url('/assets/images/welcome.jpg') ?>" style="filter: brightness(35%);" alt="gambar" class="bg" />
       <!-- Navigation -->
       <?php
       $this->load->view('admin/menu');
