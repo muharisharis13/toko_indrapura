@@ -9,16 +9,16 @@
     <meta name="description" content="Produk By Mfikri.com">
     <meta name="author" content="Mesproject">
 
-    <title>pengguna/title>
+    <title>pengguna</title>
 
-        <!-- Bootstrap Core CSS -->
-        <link href="<?php echo base_url() . 'assets/css/bootstrap.min.css' ?>" rel="stylesheet">
-        <link href="<?php echo base_url() . 'assets/css/style.css' ?>" rel="stylesheet">
-        <link href="<?php echo base_url() . 'assets/css/font-awesome.css' ?>" rel="stylesheet">
-        <!-- Custom CSS -->
-        <link href="<?php echo base_url() . 'assets/css/4-col-portfolio.css' ?>" rel="stylesheet">
-        <link href="<?php echo base_url() . 'assets/css/dataTables.bootstrap.min.css' ?>" rel="stylesheet">
-        <link href="<?php echo base_url() . 'assets/css/jquery.dataTables.min.css' ?>" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="<?php echo base_url() . 'assets/css/bootstrap.min.css' ?>" rel="stylesheet">
+    <link href="<?php echo base_url() . 'assets/css/style.css' ?>" rel="stylesheet">
+    <link href="<?php echo base_url() . 'assets/css/font-awesome.css' ?>" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="<?php echo base_url() . 'assets/css/4-col-portfolio.css' ?>" rel="stylesheet">
+    <link href="<?php echo base_url() . 'assets/css/dataTables.bootstrap.min.css' ?>" rel="stylesheet">
+    <link href="<?php echo base_url() . 'assets/css/jquery.dataTables.min.css' ?>" rel="stylesheet">
 
 </head>
 

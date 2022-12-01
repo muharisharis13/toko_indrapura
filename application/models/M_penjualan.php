@@ -20,10 +20,10 @@ class M_penjualan extends CI_Model
 		return $hsl;
 	}
 
-	function simpan_penjualan($nofak, $total, $jml_uang, $kembalian)
+	function simpan_penjualan($nofak, $total, $jml_uang, $kembalian, $jual_diskon)
 	{
 		$idadmin = $this->session->userdata('idadmin');
-		$this->db->query("INSERT INTO tbl_jual (jual_nofak,jual_total,jual_jml_uang,jual_kembalian,jual_user_id,jual_keterangan) VALUES ('$nofak','$total','$jml_uang','$kembalian','$idadmin','eceran')");
+		$this->db->query("INSERT INTO tbl_jual (jual_nofak,jual_total,jual_jml_uang,jual_kembalian,jual_user_id,jual_keterangan,jual_diskon) VALUES ('$nofak','$total','$jml_uang','$kembalian','$idadmin','eceran','$jual_diskon')");
 		foreach ($this->cart->contents() as $item) {
 			$data = array(
 				'd_jual_nofak' 			=>	$nofak,

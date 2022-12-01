@@ -117,7 +117,9 @@ class Penjualan extends CI_Controller
 	function simpan_penjualan()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
-			$total = $this->input->post('total');
+			$jual_diskon = $this->input->post('jual_diskon');
+
+			$total = $this->input->post('total2');
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;
 			if (!empty($total) && !empty($jml_uang)) {
@@ -127,7 +129,7 @@ class Penjualan extends CI_Controller
 				} else {
 					$nofak = $this->m_penjualan->get_nofak();
 					$this->session->set_userdata('nofak', $nofak);
-					$order_proses = $this->m_penjualan->simpan_penjualan($nofak, $total, $jml_uang, $kembalian);
+					$order_proses = $this->m_penjualan->simpan_penjualan($nofak, $total, $jml_uang, $kembalian, $jual_diskon);
 					if ($order_proses) {
 						$this->cart->destroy();
 
