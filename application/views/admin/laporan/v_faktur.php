@@ -10,10 +10,10 @@
   <div class="container">
     <div class="header">
       <div class="name_shop">
-        Indrapura
+        SUMBER JAYA
       </div>
       <div class="address_shop">
-        jln.indrapura km.20, kuala tanjung
+        Dusun III, Desa Sipare-pare Kecamatan Air Putih-Kab. Batubara
       </div>
       <div class="info-kasir">
         Kasir :
