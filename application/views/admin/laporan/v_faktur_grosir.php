@@ -35,6 +35,7 @@
                 </thead>
                 <tbody>
                     <?php
+                    // var_dump($data->result_array());
                     foreach ($data->result_array() as $item) {
                     ?>
                         <tr>
@@ -60,8 +61,18 @@
                 </tbody>
                 <tfoot class="t-foot">
                     <tr>
-                        <td colspan="2" style="text-align:center;"><b>Total</b></td>
-                        <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_total']); ?></b></td>
+                        <td colspan="1" style="text-align: center;">
+                            <b>Diskon</b>
+                        </td>
+                        <td style="text-align:right;" colspan="2">
+                            <b>
+                                <?php echo 'Rp. ' . number_format($item['jual_diskon']) ?>
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" style="text-align:center;"><b>Total</b></td>
+                        <td colspan="2" style="text-align:right;"><b><?php echo 'Rp ' . number_format($item['jual_total']); ?></b></td>
 
                     </tr>
                 </tfoot>
