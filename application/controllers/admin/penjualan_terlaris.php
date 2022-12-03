@@ -1,5 +1,5 @@
 <?php
-class Penjualan_terlaris extends CI_Controller
+class penjualan_terlaris extends CI_Controller
 {
   function __construct()
   {

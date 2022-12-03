@@ -1,0 +1,6 @@
+[02-Dec-2022 23:45:37 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined method CI_Input::contents() in /home/nerw7659/public_html/admin-sumberjaya/application/controllers/admin/penjualan.php:98
+Stack trace:
+#0 /home/nerw7659/public_html/admin-sumberjaya/system/core/CodeIgniter.php(360): Penjualan->add_to_cart()
+#1 /home/nerw7659/public_html/admin-sumberjaya/index.php(202): require_once('/home/nerw7659/...')
+#2 {main}
+  thrown in /home/nerw7659/public_html/admin-sumberjaya/application/controllers/admin/penjualan.php on line 98

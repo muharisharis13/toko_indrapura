@@ -65,7 +65,7 @@ class Penjualan extends CI_Controller
 			$i = $produk->row_array();
 			$data = array(
 				'id'       => $i['barang_id'],
-				'name'     => $i['barang_nama'],
+				'name'     => str_replace(",", ".", $i['barang_nama']),
 				'satuan'   => $i['barang_satuan'],
 				'harpok'   => $i['barang_harpok'],
 				'price'    => $i['barang_harjul'],
@@ -75,7 +75,9 @@ class Penjualan extends CI_Controller
 				'amount'	  => $i['barang_harjul'],
 			);
 
-			if (!empty($this->cart->total_items())) {
+			if ($this->cart->total_items() > 0) {
+
+				$count_bar = 0;
 				foreach ($this->cart->contents() as $items) {
 					$id = $items['id'];
 					$qtylama = $items['qty'];
@@ -83,19 +85,22 @@ class Penjualan extends CI_Controller
 					$kobar = $this->input->post('kode_brg');
 					$qty = 1;
 					if ($id == $kobar) {
+						// Count Bar -> Cek apakah barang sudah ada di dalam list cart atau tidak
+						$count_bar = 1;
 						$up = array(
 							'rowid' => $rowid,
 							'qty' => $qtylama + $qty
 						);
 						$this->cart->update($up);
 					} else {
-						$this->cart->insert($data);
+						if ($count_bar == 0) {
+							$this->cart->insert($data);
+						}
 					}
 				}
 			} else {
 				$this->cart->insert($data);
 			}
-
 			redirect('admin/penjualan');
 		} else {
 			echo "Halaman tidak ditemukan";
@@ -117,9 +122,10 @@ class Penjualan extends CI_Controller
 	function simpan_penjualan()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
-			$jual_diskon = $this->input->post('jual_diskon');
+			$jual_diskon = (int) $this->input->post('jual_diskon');
 
-			$total = $this->input->post('total2');
+
+			$total = str_replace(",", "", $this->input->post('total2'));
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;
 			if (!empty($total) && !empty($jml_uang)) {

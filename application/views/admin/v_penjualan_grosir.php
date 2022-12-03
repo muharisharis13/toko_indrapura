@@ -95,15 +95,25 @@
                 <form action="<?php echo base_url() . 'admin/penjualan_grosir/simpan_penjualan_grosir' ?>" method="post">
                     <table>
                         <tr>
+                            <td></td>
+                            <th>
+                                Diskon (Rp)
+                            </th>
+                            <th>
+                                <input style="margin-bottom:5px ;" type="text" class="form-control input-sm" placeholder="Diskon" id="jual_diskon" name="jual_diskon">
+                            </th>
+                        </tr>
+                        <tr>
                             <td style="width:760px;" rowspan="2"><button type="submit" class="btn btn-info btn-lg"> Simpan</button></td>
                             <th style="width:140px;">Total Belanja(Rp)</th>
-                            <th style="text-align:right;width:140px;"><input type="text" name="total2" value="<?php echo number_format($this->cart->total()); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
+                            <th style="text-align:right;width:140px;">
+                                <input type="text" id="total2" name="total2" value="<?php echo number_format($this->cart->total()); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
+                            </th>
                             <input type="hidden" id="total" name="total" value="<?php echo $this->cart->total(); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
                         </tr>
                         <tr>
                             <th>Tunai(Rp)</th>
                             <th style="text-align:right;"><input type="text" id="jml_uang" name="jml_uang" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
-                            <input type="hidden" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required>
                         </tr>
                         <tr>
                             <td></td>
@@ -218,12 +228,20 @@
         <script src="<?php echo base_url() . 'assets/js/bootstrap-datetimepicker.min.js' ?>"></script>
         <script type="text/javascript">
             $(function() {
+                $('#jual_diskon').on("input", function() {
+                    let jual_diskon = $('#jual_diskon').val()
+                    let total = $('#total').val()
+                    let hasil = total - jual_diskon
+                    let hasil2 = $('#total2').val(hasil);
+                })
                 $('#jml_uang').on("input", function() {
-                    var total = $('#total').val();
+                    var total = $('#total2').val();
+                    var newTotal = total.replace(/[^\d]/g, "");
                     var jumuang = $('#jml_uang').val();
                     var hsl = jumuang.replace(/[^\d]/g, "");
-                    $('#jml_uang2').val(hsl);
-                    $('#kembalian').val(hsl - total);
+                    $('#jml_uang').val(hsl);
+                    $('#kembalian').val(hsl - newTotal);
+
                 })
 
             });
