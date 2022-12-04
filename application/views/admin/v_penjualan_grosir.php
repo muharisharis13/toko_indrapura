@@ -66,7 +66,7 @@
                             <th>Nama Barang</th>
                             <th style="text-align:center;">Satuan</th>
                             <th style="text-align:center;">Harga(Rp)</th>
-                            <th style="text-align:center;">Diskon(Rp)</th>
+                            <!-- <th style="text-align:center;">Diskon(Rp)</th> -->
                             <th style="text-align:center;">Qty</th>
                             <th style="text-align:center;">Sub Total</th>
                             <th style="width:100px;text-align:center;">Aksi</th>
@@ -81,8 +81,13 @@
                                 <td><?= $items['name']; ?></td>
                                 <td style="text-align:center;"><?= $items['satuan']; ?></td>
                                 <td style="text-align:right;"><?php echo number_format($items['amount']); ?></td>
-                                <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td>
-                                <td style="text-align:center;"><?php echo number_format($items['qty']); ?></td>
+                                <!-- <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td> -->
+                                <td style="text-align:center;">
+                                    <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post">
+                                        <input type="hidden" value="<?= $items['id'] ?>" name="update_kobar">
+                                        <input type="text" name="update_qty" value="<?php echo number_format($items['qty']); ?>">
+                                    </form>
+                                </td>
                                 <td style="text-align:right;"><?php echo number_format($items['subtotal']); ?></td>
 
                                 <td style="text-align:center;"><a href="<?php echo base_url() . 'admin/penjualan_grosir/remove/' . $items['rowid']; ?>" class="btn btn-warning btn-xs"><span class="fa fa-close"></span> Batal</a></td>
@@ -134,7 +139,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             <h3 class="modal-title" id="myModalLabel">Data Barang</h3>
                         </div>
-                        <div class="modal-body" style="overflow:scroll;height:500px;">
+                        <div class="modal-body" style="overflow:scroll;min-height:500px;">
 
                             <table class="table table-bordered table-condensed" style="font-size:11px;" id="mydata">
                                 <thead>

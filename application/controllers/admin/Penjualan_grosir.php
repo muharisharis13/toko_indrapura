@@ -40,7 +40,7 @@ class Penjualan_grosir extends CI_Controller
 			$i = $produk->row_array();
 			$data = array(
 				'id'       => $i['barang_id'],
-				'name'     => $i['barang_nama'],
+				'name'     => str_replace(",", ".", $i['barang_nama']),
 				'satuan'   => $i['barang_satuan'],
 				'harpok'   => $i['barang_harpok'],
 				'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
