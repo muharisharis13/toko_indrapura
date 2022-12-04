@@ -66,7 +66,7 @@
                             <th>Nama Barang</th>
                             <th style="text-align:center;">Satuan</th>
                             <th style="text-align:center;">Harga(Rp)</th>
-                            <th style="text-align:center;">Diskon(Rp)</th>
+                            <!-- <th style="text-align:center;">Diskon(Rp)</th> -->
                             <th style="text-align:center;">Qty</th>
                             <th style="text-align:center;">Sub Total</th>
                             <th style="width:100px;text-align:center;">Aksi</th>
@@ -81,7 +81,7 @@
                                 <td><?= $items['name']; ?></td>
                                 <td style="text-align:center;"><?= $items['satuan']; ?></td>
                                 <td style="text-align:right;"><?php echo number_format($items['amount']); ?></td>
-                                <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td>
+                                <!-- <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td> -->
                                 <td style="text-align:center;">
                                     <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post">
                                         <input type="hidden" value="<?= $items['id'] ?>" name="update_kobar">
@@ -100,9 +100,9 @@
                 <form action="<?php echo base_url() . 'admin/penjualan/simpan_penjualan' ?>" method="post">
                     <table>
                         <tr>
-                            <td></td>
-                            <th>Diskon(Rp)</th>
-                            <th style="text-align:right;"><input type="text" id="jual_diskon" name="jual_diskon" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
+                            <!-- <td></td>
+                            <th>Diskon(Rp)</th> -->
+                            <th style="text-align:right;"><input type="text" id="jual_diskon" name="jual_diskon" class="form-control input-sm" style="text-align:right;margin-bottom:5px;display:none;"></th>
                         </tr>
                         <tr>
                             <td style="width:760px;" rowspan="2"><button type="submit" class="btn btn-info btn-lg"> Simpan</button></td>
@@ -253,7 +253,29 @@
         </script>
         <script type="text/javascript">
             $(document).ready(function() {
-                let table = $('#mydata').DataTable();
+                $('#mydata').DataTable();
+                $("#jual_diskon").val(0)
+                //Ajax kabupaten/kota insert
+                $("#kode_brg").focus();
+                $("#kode_brg").on("input", function() {
+                    var kobar = {
+                        kode_brg: $(this).val()
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() . 'admin/penjualan/get_barang'; ?>",
+                        data: kobar,
+                        success: function(msg) {
+                            $('#detail_barang').html(msg);
+                        }
+                    });
+                });
+
+                $("#kode_brg").keypress(function(e) {
+                    if (e.which == 13) {
+                        $("#jumlah").focus();
+                    }
+                });
             });
         </script>
         <script type="text/javascript">
@@ -284,31 +306,7 @@
                 });
             });
         </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                //Ajax kabupaten/kota insert
-                $("#kode_brg").focus();
-                $("#kode_brg").on("input", function() {
-                    var kobar = {
-                        kode_brg: $(this).val()
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "<?php echo base_url() . 'admin/penjualan/get_barang'; ?>",
-                        data: kobar,
-                        success: function(msg) {
-                            $('#detail_barang').html(msg);
-                        }
-                    });
-                });
 
-                $("#kode_brg").keypress(function(e) {
-                    if (e.which == 13) {
-                        $("#jumlah").focus();
-                    }
-                });
-            });
-        </script>
 
 
 </body>
