@@ -226,6 +226,17 @@
         <script src="<?php echo base_url() . 'assets/js/jquery.price_format.min.js' ?>"></script>
         <script src="<?php echo base_url() . 'assets/js/moment.js' ?>"></script>
         <script src="<?php echo base_url() . 'assets/js/bootstrap-datetimepicker.min.js' ?>"></script>
+
+        <script>
+            document.onkeyup = KeyCheck;
+
+            function KeyCheck(e) {
+                var KeyID = (window.event) ? event.keyCode : e.keyCode;
+                if (KeyID == 113) {
+                    $('#largeModal').modal('show');
+                }
+            }
+        </script>
         <script type="text/javascript">
             $(function() {
                 $('#jual_diskon').on("input", function() {
