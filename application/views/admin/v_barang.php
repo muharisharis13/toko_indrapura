@@ -67,6 +67,7 @@
                             <th>Stok</th>
                             <th>Min Stok</th>
                             <th>Kategori</th>
+                            <th>Status Barang</th>
                             <th style="width:100px;text-align:center;">Aksi</th>
                         </tr>
                     </thead>
@@ -86,10 +87,17 @@
                             $min_stok = $a['barang_min_stok'];
                             $kat_id = $a['barang_kategori_id'];
                             $kat_nama = $a['kategori_nama'];
+                            $barang_status = $a['barang_status'];
+                            $id_barang = $a['id'];
                         ?>
                             <tr>
                                 <td style="text-align:center;"><?php echo $no; ?></td>
-                                <td><?php echo $id; ?></td>
+                                <td>
+                                    <form method="post" action="<?php echo base_url() . 'admin/barang/update_kode_barang' ?>">
+                                        <input id="kode_barang" name="kode_barang" type="text" value="<?php echo $id; ?>" class=" form-control">
+                                        <input type="hidden" name="id" id="id" value="<?php echo $id_barang ?>">
+                                    </form>
+                                </td>
                                 <td><?php echo $nm; ?></td>
                                 <td style="text-align:center;"><?php echo $satuan; ?></td>
                                 <td style="text-align:right;"><?php echo 'Rp ' . number_format($harpok); ?></td>
@@ -98,6 +106,23 @@
                                 <td style="text-align:center;"><?php echo $stok; ?></td>
                                 <td style="text-align:center;"><?php echo $min_stok; ?></td>
                                 <td><?php echo $kat_nama; ?></td>
+                                <td>
+                                    <select name="status_barang" class="form-control" id="select_status<?= $id_barang ?>" onchange="changeSelect('<?= $id_barang ?>')">
+                                        <?php
+                                        if ($barang_status === 'input') {
+                                            echo "
+                                                    <option value='input' selected>Input</option>
+                                                    <option value='ready'>Ready</option>
+                                                    ";
+                                        } else {
+                                            echo "
+                                                    <option value='input' >Input</option>
+                                                    <option value='ready' selected>Ready</option>
+                                                    ";
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
                                 <td style='display:flex;gap:10px;'>
                                     <a class="btn btn-xs btn-warning" href="#modalEditPelanggan<?php echo $id ?>" data-toggle="modal" title="Edit">
                                         <span class="fa fa-edit"></span> Edit
@@ -479,6 +504,43 @@
         });
     </script>
     <script type="text/javascript">
+        // $('.select_status_barang').change(function() {
+        //     $.ajax({
+        //         url: "barang/update_status_barang",
+        //         type: "POST",
+        //         cache: false,
+        //         data: $('.form_status_barang').serialize(),
+        //         success: (result) => {
+        //             console.log({
+        //                 result
+        //             })
+        //         }
+        //     })
+        // })
+
+        function changeSelect(id) {
+            let data = {
+                "id": id,
+                "status_barang": $('#select_status' + id).val()
+            }
+
+            // console.log({
+            //     data
+            // })
+
+            $.ajax({
+                url: "barang/update_status_barang",
+                type: "POST",
+                cache: false,
+                data: data,
+                success: (result) => {
+                    console.log({
+                        result
+                    })
+                    window.location.reload()
+                }
+            })
+        }
         $(function() {
             $('.harpok').priceFormat({
                 prefix: '',

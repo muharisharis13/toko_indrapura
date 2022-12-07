@@ -37,7 +37,7 @@ class M_penjualan extends CI_Model
 				'd_jual_total'			=>	$item['subtotal']
 			);
 			$this->db->insert('tbl_detail_jual', $data);
-			$this->db->query("update tbl_barang set barang_stok=barang_stok-'$item[qty]' where barang_id='$item[id]'");
+			$this->db->query("update tbl_barang_v2 set barang_stok=barang_stok-'$item[qty]' where barang_id='$item[id]'");
 		}
 		return true;
 	}
@@ -74,7 +74,7 @@ class M_penjualan extends CI_Model
 				'd_jual_total'			=>	$item['subtotal']
 			);
 			$this->db->insert('tbl_detail_jual', $data);
-			$this->db->query("update tbl_barang set barang_stok=barang_stok-'$item[qty]' where barang_id='$item[id]'");
+			$this->db->query("update tbl_barang_v2 set barang_stok=barang_stok-'$item[qty]' where barang_id='$item[id]'");
 		}
 		return true;
 	}

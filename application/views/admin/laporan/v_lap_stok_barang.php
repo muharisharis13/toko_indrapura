@@ -42,7 +42,7 @@
                 $urut++;
                 if ($group == '-' || $group != $d['kategori_nama']) {
                     $kat = $d['kategori_nama'];
-                    $query = $this->db->query("SELECT kategori_id,kategori_nama,barang_nama,SUM(barang_stok) AS tot_stok FROM tbl_kategori JOIN tbl_barang ON kategori_id=barang_kategori_id WHERE kategori_nama='$kat'");
+                    $query = $this->db->query("SELECT kategori_id,kategori_nama,barang_nama,SUM(barang_stok) AS tot_stok FROM tbl_kategori JOIN tbl_barang_v2 ON kategori_id=barang_kategori_id WHERE kategori_nama='$kat'");
                     $t = $query->row_array();
                     $tots = $t['tot_stok'];
                     if ($group != '-')
