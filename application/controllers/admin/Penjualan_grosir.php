@@ -16,7 +16,7 @@ class Penjualan_grosir extends CI_Controller
 	function index()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
-			$data['data'] = $this->m_barang->tampil_barang();
+			$data['data'] = $this->m_barang->tampil_barang_grosir();
 			$this->load->view('admin/v_penjualan_grosir', $data);
 		} else {
 			echo "Halaman tidak ditemukan";
