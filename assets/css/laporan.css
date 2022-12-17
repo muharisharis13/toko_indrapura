@@ -1,0 +1,46 @@
+body{
+    font-family: arial,sans-serif;
+		font-size:12px;
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+		display: flex;
+		
+		width: 150px;
+	}
+
+	.container{
+		overflow: hidden;
+	}
+
+	.header{
+		text-align: center;
+	}
+
+.name_shop{
+	text-align: center;
+		font-size: 13pt;
+		font-weight: 700;
+}
+
+.address_shop{
+	text-align: center;
+}
+
+.line{
+	margin-top: 10px;
+	height: 1px;
+	width: 100%;
+	border-bottom: 1px dashed #ccc;
+}
+
+.content .table{
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+}
+
+
+.see-you{
+	padding-top:20px !important;
+}
