@@ -42,8 +42,8 @@ class M_barang extends CI_Model
 		$hsl = $this->db->query("INSERT INTO tbl_barang (barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id) VALUES ('$kobar','$nabar','$satuan','$harpok','$harjul','$harjul_grosir','$stok','$min_stok','$kat','$user_id')");
 		return $hsl;
 	}
-	
-	
+
+
 	function get_kode_barang($kode_barang)
 	{
 		$hsl = $this->db->query("select barang_id from tbl_barang where barang_id='$kode_barang'");
@@ -88,5 +88,16 @@ class M_barang extends CI_Model
 			$kd = "000001";
 		}
 		return "BR" . $kd;
+	}
+
+	function ready_all()
+	{
+		$this->db->where("barang_id !=", "");
+		$this->db->where("barang_status", "input");
+		$this->db->set("barang_status", "ready");
+
+		$hsl = $this->db->update("tbl_barang");
+
+		return $hsl;
 	}
 }

@@ -109,11 +109,7 @@
                 </table>
                 <form action="<?php echo base_url() . 'admin/penjualan/simpan_penjualan' ?>" method="post">
                     <table>
-                        <tr>
-                            <!-- <td></td>
-                            <th>Diskon(Rp)</th> -->
-                            <th style="text-align:right;"><input type="text" id="jual_diskon" name="jual_diskon" class="form-control input-sm" style="text-align:right;margin-bottom:5px;display:none;"></th>
-                        </tr>
+
                         <tr>
                             <td style="width:760px;" rowspan="2">
                                 <button type="submit" class="btn btn-info btn-lg"> Simpan</button>
@@ -134,13 +130,24 @@
 
                             </td>
                             <th style="width:140px;">Total Belanja(Rp)</th>
-                            <th style="text-align:right;width:140px;"><input type="text" name="total2" id="total2" value="<?php echo number_format($subtotal); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
+                            <th style="text-align:right;width:140px;">
+                                <input type="text" name="total2" id="total2" value="<?php echo number_format($subtotal); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
+                            </th>
                             <input type="hidden" id="total" name="total" value="<?php echo $subtotal; ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
                         </tr>
                         <tr>
                             <th>Tunai(Rp)</th>
                             <th style="text-align:right;"><input type="text" id="jml_uang" name="jml_uang" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
                             <!-- <input type="text" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required> -->
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <th>
+                                Diskon (Rp)
+                            </th>
+                            <th>
+                                <input style="margin-bottom:5px ;" type="text" class="form-control input-sm" placeholder="Diskon" id="jual_diskon" name="jual_diskon">
+                            </th>
                         </tr>
                         <tr>
                             <td></td>
@@ -361,11 +368,16 @@
         </script>
         <script type="text/javascript">
             $(function() {
-                $('#jual_diskon').on("input", function() {
-                    let jual_diskon = $('#jual_diskon').val()
+                $('#jual_diskon').on('input', function() {
+
+                    let jual_diskon = $('#jual_diskon').val().replace(/[^\d]/g, "")
                     let total = $('#total').val()
                     let hasil = total - jual_diskon
                     let hasil2 = $('#total2').val(hasil);
+
+                    console.log({
+                        total
+                    })
                 })
                 $('#jml_uang').on("input", function() {
                     var total = $('#total2').val();
@@ -464,6 +476,13 @@
                     centsLimit: 0,
                     thousandsSeparator: ','
                 });
+                $('#jual_diskon').priceFormat({
+                    prefix: '',
+                    //centsSeparator: '',
+                    centsLimit: 0,
+                    thousandsSeparator: ','
+                });
+
             });
         </script>
 

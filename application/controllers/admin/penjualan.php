@@ -196,7 +196,7 @@ class Penjualan extends CI_Controller
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
 			$jual_diskon = (int) $this->input->post('jual_diskon');
 
-
+			$jual_diskon = str_replace(",", "", $jual_diskon);
 			$total = str_replace(",", "", $this->input->post('total2'));
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;

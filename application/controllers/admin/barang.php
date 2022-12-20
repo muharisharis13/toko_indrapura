@@ -25,7 +25,7 @@ class Barang extends CI_Controller
 			echo "Halaman tidak ditemukan";
 		}
 	}
-	
+
 	function update_kode_barang()
 	{
 		$kode_barang = $this->input->post('kode_barang');
@@ -111,6 +111,14 @@ class Barang extends CI_Controller
 		}
 	}
 
+	function ready_all()
+	{
+		$this->m_barang->ready_all();
+
+		echo $this->session->set_flashdata('msg', '<label class="label label-success">Data Barang Sudah Ready</label>');
+		redirect("admin/barang");
+	}
+
 	public function initBarcode($paramCode = '123456789')
 	{
 
@@ -121,12 +129,13 @@ class Barang extends CI_Controller
 			echo "Halaman tidak ditemukan";
 		}
 	}
-	public function tambah_satuan(){ 
-	 $data = [
-      'name' => $this->input->post('satuan'),
-          ];
-	$res = $this->m_satuan->tambah_satuan($data);
+	public function tambah_satuan()
+	{
+		$data = [
+			'name' => $this->input->post('satuan'),
+		];
+		$res = $this->m_satuan->tambah_satuan($data);
 		redirect('admin/barang');
-	echo json_encode($res);
+		echo json_encode($res);
 	}
 }

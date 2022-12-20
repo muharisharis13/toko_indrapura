@@ -31,13 +31,16 @@
 
     <!-- Page Content -->
     <div class="container">
-
+        <center><?php echo $this->session->flashdata('msg'); ?></center>
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Data
                     <small>Barang</small>
                     <div class="pull-right">
+                        <a href="<?= base_url("admin/barang/ready_all") ?>" class="btn btn-sm btn-info">
+                            Ready All
+                        </a>
                         <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#largeModal"><span class="fa fa-plus"></span> Tambah Barang</a>
                         <a href="#" data-toggle="modal" data-target="#modalSatuan" class="btn btn-sm btn-primary">
                             Daftar Satuan Barang
@@ -435,9 +438,9 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <form action="<?= base_url('admin/barang/tambah_satuan')?>" method="post">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title" id="myModalLabel">Edit Barang</h3>
+                    <form action="<?= base_url('admin/barang/tambah_satuan') ?>" method="post">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 class="modal-title" id="myModalLabel">Edit Barang</h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -448,7 +451,7 @@
                             </div>
                         </div>
                     </div>
-</form>
+                    </form>
                     <div class="row">
                         <div class="col-xs-12">
                             <table class="table table-bordered table-condensed" id="tableSatuan">
@@ -505,7 +508,7 @@
         });
     </script>
     <script type="text/javascript">
-            // $('.select_status_barang').change(function() {
+        // $('.select_status_barang').change(function() {
         //     $.ajax({
         //         url: "barang/update_status_barang",
         //         type: "POST",
