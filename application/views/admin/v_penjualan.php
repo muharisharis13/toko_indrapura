@@ -115,7 +115,24 @@
                             <th style="text-align:right;"><input type="text" id="jual_diskon" name="jual_diskon" class="form-control input-sm" style="text-align:right;margin-bottom:5px;display:none;"></th>
                         </tr>
                         <tr>
-                            <td style="width:760px;" rowspan="2"><button type="submit" class="btn btn-info btn-lg"> Simpan</button></td>
+                            <td style="width:760px;" rowspan="2">
+                                <button type="submit" class="btn btn-info btn-lg"> Simpan</button>
+                                <?php
+                                if (count($cart) > 0) {
+
+
+                                ?>
+                                    <button type="button" id="holding_btn" class="btn btn-warning btn-lg"> Holding</button>
+                                <?php } ?>
+
+                                <?php if (count($cart) == 0) {
+                                ?>
+                                    <button type="button" id="list_holding" class="btn btn-success btn-lg" data-toggle="modal" data-target="#listHoldingModal"> List Hold</button>
+                                <?php
+                                }
+                                ?>
+
+                            </td>
                             <th style="width:140px;">Total Belanja(Rp)</th>
                             <th style="text-align:right;width:140px;"><input type="text" name="total2" id="total2" value="<?php echo number_format($subtotal); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
                             <input type="hidden" id="total" name="total" value="<?php echo $subtotal; ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
@@ -137,6 +154,96 @@
             </div>
             <!-- /.row -->
             <!-- ============ MODAL ADD =============== -->
+            <div class="modal fade" id="listHoldingModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>List Holding</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered table-condensed" id="mydata">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>List item</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($hold as $holding) :
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <?php
+                                                echo $holding['id']
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <table class="table table-bordered table-condensed" style="font-size:11px;margin-top:10px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Kode Barang</th>
+                                                            <th>Nama Barang</th>
+                                                            <th style="text-align:center;">Satuan</th>
+                                                            <th style="text-align:center;">Harga(Rp)</th>
+                                                            <!-- <th style="text-align:center;">Diskon(Rp)</th> -->
+                                                            <th style="text-align:center;">Qty</th>
+                                                            <th style="text-align:center;">Sub Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $i = 1; ?>
+                                                        <?php
+                                                        $subtotal = 0;
+                                                        $cart = json_decode($holding['list_item']);
+                                                        foreach ($cart as $items) : ?>
+                                                            <?php
+                                                            echo form_hidden($i . '[rowid]', $items->rowid);
+                                                            $subtotal += $items->subtotal;
+                                                            ?>
+                                                            <tr>
+                                                                <td><?= $items->id; ?></td>
+                                                                <td><?= $items->name; ?></td>
+                                                                <td style="text-align:center;"><?= $items->satuan; ?></td>
+                                                                <td style="text-align:right;"><?php echo number_format($items->amount); ?></td>
+                                                                <!-- <td style="text-align:right;"><?php echo number_format($items->disc); ?></td> -->
+                                                                <td style="text-align:center;">
+                                                                    <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post">
+                                                                        <input type="hidden" value="<?= $items->id ?>" name="update_kobar">
+                                                                        <input readonly type="text" name="update_qty" value="<?php echo $items->qty; ?>">
+                                                                        <input type="hidden" name="amount" value="<?php echo $items->amount ?>">
+                                                                    </form>
+                                                                </td>
+                                                                <td style="text-align:right;"><?php echo number_format($items->subtotal); ?></td>
+
+
+                                                            </tr>
+
+                                                            <?php $i++; ?>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td style="display:flex;align-items:center;height:200px;justify-content:center;">
+
+                                                <button class="btn btn-info hold_add_cart" data-id='<?= $holding['id'] ?>'>
+                                                    Add To Cart
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- /====== -->
             <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -297,6 +404,38 @@
                         $("#jumlah").focus();
                     }
                 });
+
+                $("#holding_btn").click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() . 'admin/penjualan/add_holding_cart'; ?>",
+                        // data: kobar,
+                        success: function(msg) {
+                            // $('#detail_barang').html(msg);
+                            console.log(msg)
+                            if (msg == 200) {
+                                location.reload()
+                            }
+                        }
+                    });
+                })
+
+                $(".hold_add_cart").click(function() {
+                    let id = $(this).data('id')
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() . 'admin/penjualan/add_to_cart/'; ?>" + id,
+                        // data: kobar,
+                        success: function(msg) {
+                            // $('#detail_barang').html(msg);
+                            // console.log(msg)
+                            if (msg == 200) {
+                                location.reload()
+                            }
+                        }
+                    });
+                })
+
             });
         </script>
         <script type="text/javascript">

@@ -26,61 +26,42 @@ class M_cart extends CI_Model
     // 	return $hsl;
     // }
 
-    function tampil_cart($id_cart_header = null)
+    function tampil_cart()
     {
-        if ($id_cart_header) {
-            $hsl = $this->db->query("SELECT * FROM tbl_cart where id_cart=$id_cart_header");
-            return $hsl;
-        } else {
-            $hsl = $this->db->query("SELECT * FROM tbl_cart");
-            return $hsl;
-        }
-    }
-    function tampil_cart_header()
-    {
-        $hsl = $this->db->query("SELECT * FROM tbl_header_cart where 'status_header'='hold'");
+        $hsl = $this->db->query("SELECT * FROM tbl_cart");
         return $hsl;
     }
 
     function simpan_cart($data)
     {
-        // return $this->db->insert('tbl_cart', $data);
-
-        if ($data['id_cart']) {
-            return $this->db->insert('tbl_cart', [
-                "id" => $data['id'],
-                "name" => $data['name'],
-                "satuan" => $data['satuan'],
-                "price" => $data['price'],
-                "disc" => $data['disc'],
-                "qty" => $data['qty'],
-                "amount" => $data['amount'],
-                "subtotal" => $data['subtotal'],
-                "id_cart" => $data['id_cart'],
-                "harpok" => $data['harpok'],
-            ]);
-        } else {
-            $this->db->insert('tbl_header_cart', [
-                'status_header' => 'ok'
-            ]);
-            $id_header_cart = $this->db->insert_id();
-            return $this->db->insert('tbl_cart', [
-                "id" => $data['id'],
-                "name" => $data['name'],
-                "satuan" => $data['satuan'],
-                "price" => $data['price'],
-                "disc" => $data['disc'],
-                "qty" => $data['qty'],
-                "amount" => $data['amount'],
-                "subtotal" => $data['subtotal'],
-                "id_cart" => $id_header_cart,
-                "harpok" => $data['harpok'],
-            ]);
-        }
+        $user_id = $this->session->userdata('idadmin');
+        // $hsl = $this->db->query("INSERT INTO tbl_cart (id,name,satuan,harpok,price,disc,qty,amount,subtotal) VALUES ('$id','$name','$satuan','$harpok','$price','$disc','$qty','$amount','$subtotal')");
+        return $this->db->insert('tbl_cart', $data);
+        // return $hsl;
     }
     function update_qty_cart($qty, $subtotal, $id)
     {
         $hsl = $this->db->query("UPDATE tbl_cart SET qty='$qty',subtotal='$subtotal' WHERE id='$id'");
         return $hsl;
+    }
+
+    function add_hold($data)
+    {
+        return $this->db->insert('tbl_hold_cart', $data);
+    }
+
+    function tampil_hold()
+    {
+        return $this->db->query("SELECT * FROM tbl_hold_cart");
+    }
+
+    function get_holding_by_id($id)
+    {
+        return $this->db->query("select * from tbl_hold_cart where id=$id")->result_array();
+    }
+
+    function delete_holding_by_id($id)
+    {
+        return $this->db->query("delete from tbl_hold_cart where id=$id");
     }
 }

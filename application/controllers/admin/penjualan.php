@@ -24,7 +24,7 @@ class Penjualan extends CI_Controller
 			$data['data'] = $this->m_barang->tampil_barang();
 			$data['cari'] = $this->m_barang->cari_barang();
 			$data['cart'] =  $this->m_cart->tampil_cart()->result_array();
-			$data['cart_header'] =  $this->m_cart->tampil_cart_header()->result_array();
+			$data['hold'] = $this->m_cart->tampil_hold()->result_array();
 			$this->load->view('admin/v_penjualan', $data);
 		} else {
 			echo "Halaman tidak ditemukan";
@@ -83,65 +83,96 @@ class Penjualan extends CI_Controller
 		// }
 		redirect('admin/penjualan');
 	}
-	function add_to_cart()
+	function add_to_cart($id_holding = '')
 	{
+
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
-			$kobar = $this->input->post('kode_brg');
-			$produk = $this->m_barang->get_barang($kobar);
-			$i = $produk->row_array();
-			if (count($i) == 0) {
-				echo $this->session->set_flashdata('msg', '<label class="label label-danger">Data Tidak Ditemukan</label>');
-				redirect('admin/penjualan');
-			}
-			$data = array(
-				'id'       => $i['barang_id'],
-				'name'     => str_replace(",", ".", $i['barang_nama']),
-				'satuan'   => $i['barang_satuan'],
-				'harpok'   => $i['barang_harpok'],
-				'price'    => $i['barang_harjul'],
-				// 'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
-				'disc'     => $this->input->post('diskon'),
-				'qty'      => 1,
-				'amount'	  => $i['barang_harjul'],
-				'subtotal' => $i['barang_harjul'] * 1,
-			);
+			if ($id_holding) {
+				$get_holidng_by_id = $this->m_cart->get_holding_by_id($id_holding);
+				$data_hold = json_decode($get_holidng_by_id[0]['list_item']);
 
-			$count_cart = count($this->m_cart->tampil_cart_header()->result_array());
-			$get_id_cart_header = $this->m_cart->tampil_cart_header()->result();
-			$id_header_cart = $get_id_cart_header[0]->id;
-
-
-			if ($count_cart > 0) {
-
-				$check_cart_items = count($this->m_cart->get_cart_by_id($kobar)->result_array());
-				// Jika Ada di Tbl_cart, maka update
-				if ($check_cart_items > 0) {
-					foreach ($this->m_cart->tampil_cart($id_header_cart)->result_array() as $items) {
-						$id = $items['id'];
-						$qtylama = $items['qty'];
-						$harga_lama = $items['price'];
-						$kobar = $this->input->post('kode_brg');
-						$qty = 1;
-						// echo $id . " - " . $kobar;
-						// echo $count_bar;
-						// exit();
-						if ($id == $kobar) {
-							$subtotal = $harga_lama;
-							$qty_baru = $qtylama + $qty;
-							$subtotal_baru = $subtotal * $qty_baru;
-
-							// $this->cart->update($up);
-							$this->m_cart->update_qty_cart($qty_baru, $subtotal_baru, $id);
-						}
-					}
-				} else {
+				foreach ($data_hold as $item) {
+					$data = array(
+						'id' => $item->id,
+						'name'     => str_replace(",", ".", $item->name),
+						'satuan'   => $item->satuan,
+						'harpok'   => $item->harpok,
+						'price'    => $item->price,
+						// 'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
+						'disc'     => $item->disc,
+						'qty'      => $item->qty,
+						'amount'	  => $item->amount,
+						'subtotal' => $item->subtotal
+					);
 					$this->m_cart->simpan_cart($data);
 				}
+
+				$this->m_cart->delete_holding_by_id($id_holding);
+				$this->session->set_flashdata('msg', '<label class="label label-success">Data berhasil di tambah ke cart</label>');
+				echo 200;
 			} else {
-				// $this->cart->insert($data);
-				$this->m_cart->simpan_cart($data);
+				$kobar = $this->input->post('kode_brg');
+				$produk = $this->m_barang->get_barang($kobar);
+				$i = $produk->row_array();
+				if (count($i) == 0) {
+					echo $this->session->set_flashdata('msg', '<label class="label label-danger">Data Tidak Ditemukan</label>');
+					redirect('admin/penjualan');
+				}
+				$data = array(
+					'id'       => $i['barang_id'],
+					'name'     => str_replace(",", ".", $i['barang_nama']),
+					'satuan'   => $i['barang_satuan'],
+					'harpok'   => $i['barang_harpok'],
+					'price'    => $i['barang_harjul'],
+					// 'price'    => str_replace(",", "", $this->input->post('harjul')) - $this->input->post('diskon'),
+					'disc'     => $this->input->post('diskon'),
+					'qty'      => 1,
+					'amount'	  => $i['barang_harjul'],
+					'subtotal' => $i['barang_harjul'] * 1
+				);
+
+				$count_cart = count($this->m_cart->tampil_cart()->result_array());
+
+				if ($count_cart > 0) {
+
+					$count_bar = 0;
+					$check_cart_items = count($this->m_cart->get_cart_by_id($kobar)->result_array());
+					// Jika Ada di Tbl_cart, maka update
+					if ($check_cart_items > 0) {
+						foreach ($this->m_cart->tampil_cart()->result_array() as $items) {
+							$id = $items['id'];
+							$qtylama = $items['qty'];
+							$harga_lama = $items['price'];
+							$rowid = $items['rowid'];
+							$kobar = $this->input->post('kode_brg');
+							$qty = 1;
+							// echo $id . " - " . $kobar;
+							// echo $count_bar;
+							// exit();
+							if ($id == $kobar) {
+								$subtotal = $harga_lama;
+								$qty_baru = $qtylama + $qty;
+								$subtotal_baru = $subtotal * $qty_baru;
+								// Count Bar -> Cek apakah barang sudah ada di dalam list cart atau tidak
+								$count_bar = 1;
+								$up = array(
+									'rowid' => $rowid,
+									'qty' => $qty_baru,
+									'subtotal' => $subtotal_baru
+								);
+								// $this->cart->update($up);
+								$this->m_cart->update_qty_cart($qty_baru, $subtotal_baru, $id);
+							}
+						}
+					} else {
+						$this->m_cart->simpan_cart($data);
+					}
+				} else {
+					// $this->cart->insert($data);
+					$this->m_cart->simpan_cart($data);
+				}
+				redirect('admin/penjualan');
 			}
-			redirect('admin/penjualan');
 		} else {
 			echo "Halaman tidak ditemukan";
 		}
@@ -202,5 +233,18 @@ class Penjualan extends CI_Controller
 		$x['data'] = $this->m_penjualan->cetak_faktur();
 		$this->load->view('admin/laporan/v_faktur', $x);
 		//$this->session->unset_userdata('nofak');
+	}
+
+	function add_holding_cart()
+	{
+		$data_cart = $this->m_cart->tampil_cart()->result_array();
+		$data_hold = json_encode($data_cart);
+		$data = array(
+			"list_item" => $data_hold
+		);
+		$this->m_cart->add_hold($data);
+		$this->m_cart->hapus_tb_cart();
+		$this->session->set_flashdata('msg', '<label class="label label-success">Transaksi Berhasil di Hold</label>');
+		echo 200;
 	}
 }
