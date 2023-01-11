@@ -43,7 +43,6 @@
                     <th>Satuan</th>
                     <th>Harga Jual</th>
                     <th>Qty</th>
-                    <th>Diskon</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -71,7 +70,6 @@
                         <td style="text-align:left;"><?php echo $barang_satuan; ?></td>
                         <td style="text-align:right;"><?php echo 'Rp ' . number_format($barang_harjul); ?></td>
                         <td style="text-align:center;"><?php echo $barang_qty; ?></td>
-                        <td style="text-align:right;"><?php echo 'Rp ' . number_format($barang_diskon); ?></td>
                         <td style="text-align:right;"><?php echo 'Rp ' . number_format($barang_total); ?></td>
                     </tr>
                 <?php } ?>
@@ -81,7 +79,7 @@
                 $b = $jml->row_array();
                 ?>
                 <tr>
-                    <td colspan="9" style="text-align:center;"><b>Total</b></td>
+                    <td colspan="8" style="text-align:center;"><b>Total</b></td>
                     <td style="text-align:right;"><b><?php echo 'Rp ' . number_format($b['total']); ?></b></td>
                 </tr>
             </tfoot>

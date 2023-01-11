@@ -74,9 +74,17 @@
 
                         <tr>
                             <td style="text-align:center;vertical-align:middle">3</td>
-                            <td style="vertical-align:middle;">Laporan Penjualan</td>
+                            <td style="vertical-align:middle;">Laporan Penjualan Per Barang</td>
                             <td style="text-align:center;">
                                 <a class="btn btn-sm btn-default" href="<?php echo base_url() . 'admin/laporan/lap_data_penjualan' ?>" target="_blank"><span class="fa fa-print"></span> Print</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center;vertical-align:middle">3</td>
+                            <td style="vertical-align:middle;">Laporan Penjualan Transaksi</td>
+                            <td style="text-align:center;">
+                                <a class="btn btn-sm btn-default" href="<?php echo base_url() . 'admin/laporan/laporan_transaksi' ?>" target="_blank"><span class="fa fa-print"></span> Print</a>
                             </td>
                         </tr>
 

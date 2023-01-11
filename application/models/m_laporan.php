@@ -72,4 +72,9 @@ class M_laporan extends CI_Model
 		$hsl = $this->db->query("SELECT DATE_FORMAT(jual_tanggal,'%M %Y') AS bulan,d_jual_barang_nama,d_jual_barang_satuan,d_jual_barang_harpok,d_jual_barang_harjul,(d_jual_barang_harjul-d_jual_barang_harpok) AS keunt,d_jual_qty,d_jual_diskon,SUM(((d_jual_barang_harjul-d_jual_barang_harpok)*d_jual_qty)-(d_jual_qty*d_jual_diskon)) AS total FROM tbl_jual JOIN tbl_detail_jual ON jual_nofak=d_jual_nofak WHERE (YEAR(jual_tanggal)= '$thn_awal' AND MONTH(jual_tanggal) = '$bln_awal' ) OR ( YEAR(jual_tanggal)='$thn_akhir' AND MONTH(jual_tanggal)='$bln_akhir');");
 		return $hsl;
 	}
+
+	function get_list_penjualan_transaksi()
+	{
+		return $this->db->query('select tbl_jual.* , count(tbl_detail_jual.d_jual_barang_nama) as total_item from tbl_jual left join tbl_detail_jual on tbl_jual.jual_nofak = tbl_detail_jual.d_jual_nofak group by tbl_jual.jual_nofak')->result_array();
+	}
 }
