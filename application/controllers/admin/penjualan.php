@@ -194,12 +194,15 @@ class Penjualan extends CI_Controller
 	function simpan_penjualan()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
-			$jual_diskon = (int) $this->input->post('jual_diskon');
+			// $jual_diskon = (int) $this->input->post('jual_diskon');
 
-			$jual_diskon = str_replace(",", "", $jual_diskon);
+			$jual_diskon = str_replace(",", "", $this->input->post('jual_diskon'));
 			$total = str_replace(",", "", $this->input->post('total2'));
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;
+
+			// var_dump($jual_diskon);
+			// die;
 			if (!empty($total) && !empty($jml_uang)) {
 				if ($jml_uang < $total) {
 					echo $this->session->set_flashdata('msg', '<label class="label label-danger">Jumlah Uang yang anda masukan Kurang</label>');

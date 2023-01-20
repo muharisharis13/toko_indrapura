@@ -168,7 +168,7 @@
                             <h4>List Holding</h4>
                         </div>
                         <div class="modal-body">
-                            <table class="table table-bordered table-condensed" id="mydata">
+                            <table class="table table-bordered table-condensed" id="mydatas">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -374,16 +374,21 @@
                     let total = $('#total').val()
                     let hasil = total - jual_diskon
                     let hasil2 = $('#total2').val(hasil);
+                    var jumuang = $('#jml_uang').val();
+                    var newJumuang = jumuang.replace(/[^\d]/g, "");
+                    $('#kembalian').val(newJumuang - hasil)
 
-                    console.log({
-                        total
-                    })
+
                 })
                 $('#jml_uang').on("input", function() {
                     var total = $('#total2').val();
                     var newTotal = total.replace(/[^\d]/g, "");
                     var jumuang = $('#jml_uang').val();
                     var hsl = jumuang.replace(/[^\d]/g, "");
+                    console.log({
+                        newTotal,
+                        hsl
+                    })
                     $('#jml_uang').val(hsl);
                     $('#kembalian').val(hsl - newTotal);
                 });
