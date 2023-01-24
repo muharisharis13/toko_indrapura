@@ -24,7 +24,7 @@
 */
 // $config['base_url'] = 'https://admin.sumberjaya.id/';
 // $config['base_url'] = 'https://staging-admin.sumberjaya.id/';
-$config['base_url'] = 'http://localhost/staging-admin-sumberjaya/';
+$config['base_url'] = 'http://localhost/toko_indrapura/';
 
 /*
 |--------------------------------------------------------------------------

@@ -60,26 +60,26 @@
           ?>
         </tbody>
         <tfoot class="t-foot">
-        <tr>
-            <td colspan="2" style="text-align:center;"><b>Jumlah cash</b></td>
-            <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_jml_uang']); ?></b></td>
-  
-          </tr>
-        <tr>
-            <td colspan="2" style="text-align:center;"><b>Diskon</b></td>
-            <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_diskon']); ?></b></td>
-  
-          </tr>
-          
           <tr>
             <td colspan="2" style="text-align:center;"><b>Total</b></td>
+            <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_total'] + $item['jual_diskon']); ?></b></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align:center;"><b>Grand Total</b></td>
             <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_total']); ?></b></td>
-  
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align:center;"><b>Tunai</b></td>
+            <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_jml_uang']); ?></b></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align:center;"><b>Diskon</b></td>
+            <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_diskon']); ?></b></td>
           </tr>
           <tr>
             <td colspan="2" style="text-align:center;"><b>Kembalian</b></td>
             <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_kembalian']); ?></b></td>
-  
+
           </tr>
         </tfoot>
       </table>

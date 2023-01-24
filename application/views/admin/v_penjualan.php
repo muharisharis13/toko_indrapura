@@ -111,7 +111,7 @@
                     <table>
 
                         <tr>
-                            <td style="width:760px;" rowspan="2">
+                            <td style="width:760px;" rowspan="3">
                                 <button type="submit" class="btn btn-info btn-lg"> Simpan</button>
                                 <?php
                                 if (count($cart) > 0) {
@@ -131,9 +131,14 @@
                             </td>
                             <th style="width:140px;">Total Belanja(Rp)</th>
                             <th style="text-align:right;width:140px;">
-                                <input type="text" name="total2" id="total2" value="<?php echo number_format($subtotal); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
+                                <input type="text" name="total3" id="total3" value="<?php echo number_format($subtotal); ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
                             </th>
                             <input type="hidden" id="total" name="total" value="<?php echo $subtotal; ?>" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
+                        </tr>
+                        <tr>
+                            <th>Grand Total(Rp)</th>
+                            <th style="text-align:right;"><input type="text" id="total2" value="<?php echo number_format($subtotal); ?>" name="total2" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
+                            <!-- <input type="text" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required> -->
                         </tr>
                         <tr>
                             <th>Tunai(Rp)</th>
