@@ -21,6 +21,8 @@
     <link href="<?php echo base_url() . 'assets/css/jquery.dataTables.min.css' ?>" rel="stylesheet">
     <link href="<?php echo base_url() . 'assets/dist/css/bootstrap-select.css' ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'assets/css/bootstrap-datetimepicker.min.css' ?>">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -40,41 +42,60 @@
                 </h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-bottom: 3px;">
+            <div class="col-md-3">
+                <label for="">No. Member</label>
+                <input type="text" style="text-transform: uppercase;" class="form-control" name="no_member" value="<?= $get_detail_member->no_member ?>" disabled>
+            </div>
             <div class="col-md-3">
                 <label for="">No. Handphone</label>
-                <input type="text" class="form-control" name="nohp">
+                <input type="text" class="form-control" name="no_hp_user" value="<?= $get_detail_member->no_hp_user ?>" disabled>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-bottom: 3px;">
             <div class="col-md-3">
                 <label for="">Nama</label>
-                <input type="text" class="form-control" name="nama">
+                <input type="text" class="form-control" name="nama" value="<?= $get_detail_member->nama_user ?>" disabled>
+            </div>
+            <div class="col-md-3">
+                <label for="">alamat</label>
+                <input type="text" class="form-control" name="alamat" value="<?= $get_detail_member->alamat ?>" disabled>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-bottom: 3px;">
             <div class="col-md-3">
                 <label for="">Point</label>
-                <input type="text" class="form-control" name="point">
+                <input type="text" class="form-control" name="point" value="<?= $get_detail_member->point ?>" disabled>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label for="">Uang</label>
-                <input type="text" class="form-control" name="uang">
+                <input type="text" class="form-control" name="uang" value="<?= $get_detail_member->uang ?>" disabled>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="">Product</label>
-                <select name="product" class="form-control">
-                    <option value="-">-Select Product-</option>
+        <div class="row" style="padding-bottom: 3px;">
+            <div class="col-md-6">
+                <label for="">Pilih Product</label>
+                <select class="select-product form-control" name="select_product" id="select_product" onchange="selectProduct()">
+                    <option value="">- Select Product -</option>
+                    <?php
+                    foreach ($get_list_product->result_array() as $item) {
+                    ?>
+                        <option value="<?php echo $item['barang_id'] ?>">
+                            <?=
+                            $item['barang_nama']
+                            ?>
+                            (Stock : <?=
+                                        $item['barang_stok']
+                                        ?>)
+
+                        </option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
 
     </div>
-    <div class="container">
+    <div class="container" style="margin-top: 50px;">
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered table-condensed" style="font-size:11px;margin-top:10px;">
@@ -91,7 +112,7 @@
                             <th style="width:100px;text-align:center;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table_product">
                     </tbody>
                 </table>
                 <table>
@@ -181,6 +202,96 @@
     <script src="<?php echo base_url() . 'assets/js/jquery.price_format.min.js' ?>"></script>
     <script src="<?php echo base_url() . 'assets/js/moment.js' ?>"></script>
     <script src="<?php echo base_url() . 'assets/js/bootstrap-datetimepicker.min.js' ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(() => {
+            $(".select-product").select2();
+
+
+            let checkCartPoint = localStorage.getItem("cart_point");
+            let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+            cartPoint.map((item, index) => {
+                let subTotal = parseInt(item.qty) * parseInt(item.barang_harjul)
+                let html = `
+                                <tr>
+                                    <td>
+                                        ${item.id}
+                                    </td>
+                                    <td>
+                                        ${item.barang_id}
+                                    </td>
+                                    <td>
+                                        ${item.barang_nama}
+                                    </td>
+                                    <td>
+                                        ${item.barang_satuan}
+                                    </td>
+                                    <td>
+                                        ${item.barang_harjul}
+                                    </td>
+                                    <td>
+                                        ${item.qty}
+                                    </td>
+                                    <td>
+                                        ${subTotal}
+                                    </td>
+                                    <td style="text-align:end;">
+                                            <button class="btn btn-sm btn-danger">
+                                                Delete
+                                            </button>
+                                    </td>
+                                </tr>
+                            `
+                $('#table_product').append(html)
+            })
+        })
+
+        function selectProduct() {
+            var selectBox = document.getElementById("select_product");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+            $.ajax({
+                url: "<?= base_url() ?>admin/member/select_product",
+                type: "POST",
+                data: {
+                    id: selectedValue
+                },
+                success: (result) => {
+                    console.log({
+                        result: JSON.parse(result)
+                    })
+                    let checkCartPoint = localStorage.getItem("cart_point");
+                    let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+
+
+                    if (JSON.parse(result)?.id) {
+                        let product = JSON.parse(result)
+                        if (cartPoint.length > 0) {
+                            localStorage.setItem("cart_point", JSON.stringify([
+
+                                ...cartPoint,
+                                {
+                                    ...product,
+                                    qty: 1
+                                }
+                            ]))
+
+                        } else {
+                            localStorage.setItem("cart_point", JSON.stringify([{
+                                ...product,
+                                qty: 1
+                            }]))
+                        }
+                        location.reload()
+
+                    } else {
+                        alert("tidak ada product")
+                    }
+                }
+            })
+        }
+    </script>
 
 </body>
 
