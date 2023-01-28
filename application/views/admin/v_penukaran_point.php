@@ -118,7 +118,7 @@
                 <table>
 
                     <tr>
-                        <td style="width:760px;" rowspan="3">
+                        <td style="width:760px;" rowspan="2">
                             <!-- <button type="submit" class="btn btn-info btn-lg"> Simpan</button> -->
                         </td>
                         <th style="width:140px;">Total Belanja(Rp)</th>
@@ -128,28 +128,14 @@
                         <input type="hidden" id="total" name="total" value="" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly>
                     </tr>
                     <tr>
-                        <th>Grand Total(Rp)</th>
-                        <th style="text-align:right;"><input type="text" id="total2" value="" name="total2" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
-                        <!-- <input type="text" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required> -->
-                    </tr>
-                    <tr>
                         <th>Tunai(Rp)</th>
-                        <th style="text-align:right;"><input type="text" id="jml_uang" name="jml_uang" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
+                        <th style="text-align:right;"><input type="text" id="jml_uang" name="jml_uang" value="<?= $get_detail_member->uang ?>" class="jml_uang form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
                         <!-- <input type="text" id="jml_uang2" name="jml_uang2" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required> -->
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <th>
-                            Diskon (Rp)
-                        </th>
-                        <th>
-                            <input style="margin-bottom:5px ;" type="text" class="form-control input-sm" placeholder="Diskon" id="jual_diskon" name="jual_diskon">
-                        </th>
                     </tr>
                     <tr>
                         <td></td>
                         <th>Kembalian(Rp)</th>
-                        <th style="text-align:right;"><input disabled type="text" id="kembalian" name="kembalian" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
+                        <th style="text-align:right;"><input disabled type="text" id="kembalian" name="kembalian" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" readonly></th>
                     </tr>
                     <tr>
                         <td></td>
@@ -175,9 +161,9 @@
                 <div class="modal-body">
                     <form action="">
                         <div style="display: flex; justify-content:center;align-items:center;flex-direction:column">
-                            <label>Nama</label>
-                            <label>Point</label>
-                            <input type="text" class="form-control" style="width:10em" name="pengurangan_point">
+                            <label id="nama_mems"></label>
+                            <label id="point_mems"></label>
+                            <input type="text" class="form-control" style="width:15em" name="pengurangan_point" placeholder="Masukkan Jumlah Pengurangan">
                         </div>
                     </form>
                 </div>
@@ -211,8 +197,10 @@
 
             let checkCartPoint = localStorage.getItem("cart_point");
             let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+            var total = 0
             cartPoint.map((item, index) => {
                 let subTotal = parseInt(item.qty) * parseInt(item.barang_harjul)
+                total += subTotal
                 let html = `
                                 <tr>
                                     <td>
@@ -237,15 +225,27 @@
                                         ${subTotal}
                                     </td>
                                     <td style="text-align:end;">
-                                            <button class="btn btn-sm btn-danger">
+                                            <button class="btn btn-sm btn-danger" onclick="removeItem(${item.id})">
                                                 Delete
                                             </button>
                                     </td>
                                 </tr>
                             `
                 $('#table_product').append(html)
+                var total_keseluruhan = $('#total3').val(total)
+                var tunai = $('#jml_uang').val()
+                $('#kembalian').val(tunai - total)
+
+                document.getElementById('nama_mems').innerHTML = 'Nama : <?= $get_detail_member->nama_user ?>';
+                document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
             })
         })
+
+        function removeItem(item) {
+            // items = JSON.stringify(item);
+            // localStorage.setItem("cart_point", items);
+            // localStorage.removeItem("cart_point", [id]);
+        }
 
         function selectProduct() {
             var selectBox = document.getElementById("select_product");
