@@ -93,7 +93,7 @@
                             <div class="form-group">
                                 <label class="control-label col-xs-3">Kode Barang</label>
                                 <div class="col-xs-9">
-                                    <input name="kobar" class="form-control" type="text" minlength="13" placeholder="Kode Barang..." style="width:335px;" required>
+                                    <input name="kobar" class="form-control" type="text" minlength="10" placeholder="Kode Barang..." style="width:335px;" required>
                                 </div>
                             </div>
 
