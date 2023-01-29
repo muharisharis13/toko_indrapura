@@ -10,6 +10,7 @@ class Member extends CI_Controller
         };
         $this->load->model("m_member");
         $this->load->model("m_barang");
+        $this->load->model("m_penjualan");
     }
 
 
@@ -62,5 +63,51 @@ class Member extends CI_Controller
 
         $hasil = $this->m_member->get_detail_product($id_product);
         echo json_encode($hasil);
+    }
+    public function create_penukaran()
+    {
+        $data = $this->input->post();
+
+        // $data_update_point = [
+        //     'uang' =>  $data['jml_uang'] - $data['total3'],
+        //     'point' => $data['point'] - $data['pengurangan_point']
+        // ];
+        // $this->m_member->update_point($data['no_member'], $data_update_point);
+
+        $nofak = $this->m_penjualan->get_nofak();
+        // $data_simpan_member = [
+        //     'jual_nofak' => $nofak,
+        //     'jual_total' => $data['total3'],
+        //     'jual_jml_uang' => $data['jml_uang'],
+        //     'jual_kembalian' => $data['kembalian'],
+        //     'jual_user_id' => $this->session->userdata('idadmin'),
+        //     'jual_keterangan' => "Member"
+
+        // ];
+        // $this->m_member->simpan($data_simpan_member);
+
+        $detail =   $this->convertDetail($nofak, $data['detail']);
+        $res_detail =   $this->db->insert_batch('tbl_detail_jual', $detail);
+        // var_dump($detail);
+    }
+    public function convertDetail($id, $data)
+    {
+        $item = json_decode($data);
+        $detail = [];
+        foreach ($item as $value) {
+            $detailData = [];
+            $detailData = [
+                'd_jual_nofak' => $id,
+                'd_jual_barang_id' => $value->barang_id,
+                'd_jual_barang_nama' => $value->barang_nama,
+                'd_jual_barang_satuan' => $value->barang_satuan,
+                'd_jual_barang_harpok' => $value->barang_harpok,
+                'd_jual_barang_harjul' => $value->barang_harjul,
+                'd_jual_qty' => $value->qty,
+                'd_jual_total' => $value->qty * $value->barang_harjul,
+            ];
+            array_push($detail, $detailData);
+        }
+        return $detail;
     }
 }

@@ -56,4 +56,15 @@ class M_member extends CI_Model
       "select * from tbl_barang where barang_id='$id_product'"
     )->row();
   }
+  function update_point($id, $data)
+  {
+    $this->db->select('*')->from('tbl_member')->where('no_member', $id);
+    $res = $this->db->update('tbl_member', $data);
+    return $res;
+  }
+  function simpan($data)
+  {
+    $res =  $this->db->insert('tbl_jual', $data);
+    return $res;
+  }
 }
