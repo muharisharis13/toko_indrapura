@@ -26,6 +26,49 @@ class Barang extends CI_Controller
 		}
 	}
 
+	function ajax_list()
+	{
+		$list = $this->m_barang->get_datatables();
+		$data = array();
+		$no = $_POST['start'] + 1;
+		foreach ($list as $value) {
+
+			$row = array();
+			$row[] = $no++;
+			$row[] = $value->barang_id;
+			$row[] = $value->barang_nama;
+			$row[] = $value->barang_satuan;
+			$row[] = $value->barang_harpok;
+			$row[] = $value->barang_harjul;
+			$row[] = $value->barang_harjul_grosir;
+			$row[] = $value->barang_stok;
+			$row[] = $value->barang_min_stok;
+			$row[] = $value->kategori_nama;
+			$row[] = $value->barang_status;
+
+			$btn_edit =
+				'<a class="btn btn-xs btn-warning " id="data' . $value->id . '" onclick="get_data(' . $value->id . ')" data-data=`' . json_encode($value) . '"`>
+                                        <span class="fa fa-edit"></span> Edit
+                                    </a>';
+			$btn_delete =
+				'<a class="btn btn-xs btn-danger" onclick="delete_data(' . $value->id . ')" >
+                                        <span class="fa fa-close"></span> Hapus
+                                    </a>';
+			$action = $btn_edit . $btn_delete;
+			$row[] = "<div class='form-inline'>" . $action . "</div>";
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->m_barang->count_all(),
+			"recordsFiltered" => $this->m_barang->count_filtered(),
+			"data" => $data
+		);
+		//output to json format
+		echo json_encode($output);
+	}
+
 	function update_kode_barang()
 	{
 		$kode_barang = $this->input->post('kode_barang');
@@ -42,6 +85,12 @@ class Barang extends CI_Controller
 			echo "window.location.href = '/toko_indrapura/admin/barang';</script>";
 			// redirect('admin/barang');
 		}
+	}
+
+	function get_detail($id)
+	{
+		$res = $this->db->select('*')->from('tbl_barang')->where('id', $id)->get()->row();
+		echo json_encode($res);
 	}
 
 	function update_status_barang()
