@@ -73,8 +73,12 @@ class M_laporan extends CI_Model
 		return $hsl;
 	}
 
+	function get_list_penjualan_transaksi_point()
+	{
+		return $this->db->query('select tbl_jual.* , count(tbl_detail_jual.d_jual_barang_nama) as total_item from tbl_jual left join tbl_detail_jual on tbl_jual.jual_nofak = tbl_detail_jual.d_jual_nofak where jual_keterangan="Member"  group by tbl_jual.jual_nofak')->result_array();
+	}
 	function get_list_penjualan_transaksi()
 	{
-		return $this->db->query('select tbl_jual.* , count(tbl_detail_jual.d_jual_barang_nama) as total_item from tbl_jual left join tbl_detail_jual on tbl_jual.jual_nofak = tbl_detail_jual.d_jual_nofak group by tbl_jual.jual_nofak')->result_array();
+		return $this->db->query('select tbl_jual.* , count(tbl_detail_jual.d_jual_barang_nama) as total_item from tbl_jual left join tbl_detail_jual on tbl_jual.jual_nofak = tbl_detail_jual.d_jual_nofak where jual_keterangan="eceran"  group by tbl_jual.jual_nofak')->result_array();
 	}
 }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laporan transaksi</title>
+  <title>Laporan transaksi By Point</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
   <div class=" container-fluid">
 
     <h2 style="text-align: center;">
-      Laporan Penjualan Transaksi
+      Laporan Penjualan Transaksi By Point
     </h2>
     <table border="1" align="center" class="table" style="width: 90vw;">
       <thead>
