@@ -34,7 +34,13 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <center><?php echo $this->session->flashdata('msg'); ?></center>
+                <center><?php echo $this->session->flashdata('msg'); ?>
+                    <?php if ($this->session->flashdata('success')) { ?>
+                        <span class="alert alert-success"><?= $this->session->flashdata('success') ?></span>
+                    <?php } else { ?>
+                        <span class="alert alert-danger"><?= $this->session->flashdata('err') ?></span>
+                    <?php } ?>
+                </center>
                 <h1 class="page-header">Member
                     <small>Page Member</small>
                 </h1>

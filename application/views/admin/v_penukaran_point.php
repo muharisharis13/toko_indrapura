@@ -37,7 +37,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <center><?php echo $this->session->flashdata('msg'); ?></center>
+                    <center>
+                        <?php echo $this->session->flashdata('msg'); ?>
+
+                    </center>
                     <h1 class="page-header">Member
                         <small>Penukaran Point</small>
                     </h1>
@@ -264,10 +267,17 @@
                     async: false,
                     success: function(data) {
                         console.log(data)
+                        if (data == true) {
+                            window.location = '<?= base_url('admin/member') ?>'
+                            localStorage.removeItem("cart_point")
+                        } else {
+                            window.location = '<?= base_url('admin/member') ?>'
+                            localStorage.removeItem("cart_point")
+                        }
                     },
-                    error: function(e) {
-                        console.log(e);
-                    }
+                    // error: function(e) {
+                    //     console.log(e);
+                    // }
                 });
             });
         })
