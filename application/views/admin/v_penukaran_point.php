@@ -52,6 +52,9 @@
                     <input type="text" style="text-transform: uppercase;" class="form-control" name="no_member" value="<?= $get_detail_member->no_member ?>" readonly>
                 </div>
                 <div class="col-md-3">
+                    <?php
+                    print_r($get_detail_member);
+                    ?>
                     <label for="">No. Handphone</label>
                     <input type="text" class="form-control" name="no_hp_user" value="<?= $get_detail_member->no_hp_user ?>" readonly>
                 </div>
@@ -229,9 +232,12 @@
                                     </td>
                                     <td>
                                         ${item.barang_harjul}
+                                        <input id="barang_harjul" value=${item.barang_harjul} type="hidden" />
                                     </td>
                                     <td>
-                                        ${item.qty}
+                                        <form >
+                                            <input class=' form-control' name="qty" id="qty" value=${item.qty} />
+                                        </form>
                                     </td>
                                     <td>
                                         ${subTotal}
@@ -250,6 +256,19 @@
 
                 document.getElementById('nama_mems').innerHTML = 'Nama : <?= $get_detail_member->nama_user ?>';
                 document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
+            })
+
+            $("#qty").on("input", () => {
+                let qty = $("#qty").val() ? parseFloat($("#qty").val()) : 0;
+                let barang_harjul = $('#barang_harjul').val() ? parseInt($('#barang_harjul').val()) : 0;
+                let checkCartPoint = localStorage.getItem("cart_point");
+                let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+
+                localStorage.setItem("cart_point", JSON.stringify(cartPoint.map(item => ({
+                    ...item,
+                    qty: qty,
+                    subTota: parseFloat(qty) * parseInt(barang_harjul)
+                }))))
             })
 
             $('#create').submit(function(e) {
@@ -342,29 +361,9 @@
                 document.getElementById('nama_mems').innerHTML = 'Nama : <?= $get_detail_member->nama_user ?>';
                 document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
             })
-            // items = JSON.stringify(item);
-            // localStorage.setItem("cart_point", items);
-            // localStorage.removeItem("cart_point", [id]);
         }
 
         function allItem() {
-            // let table;
-            // table = document.getElementById('table_product');
-            // let obj = {};
-            // for (i = 1; i < table.rows.length; i++) {
-            //     let objCells = table.rows.item(i).cells;
-            //     let cur = [];
-            //     for (var j = 0; j < objCells.length - 1; j++) {
-            //         if (j == 1 || j == 7) {
-            //             cur.push(objCells.item(j).innerHTML.split(".").join(""));
-            //         } else {
-            //             cur.push(objCells.item(j).innerHTML);
-            //         }
-
-            //     }
-            //     obj[i] = cur;
-            // }
-            // return obj;
             let checkCartPoint = localStorage.getItem("cart_point");
             let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
             return cartPoint;
@@ -399,13 +398,16 @@
                                     qty: 1
                                 }
                             ]))
+                            // localStorage.setItem("no_member", JSON.stringify(<?= $get_detail_member->no_member ?>))
 
                         } else {
                             localStorage.setItem("cart_point", JSON.stringify([{
                                 ...product,
                                 qty: 1
                             }]))
+                            // localStorage.setItem("no_member", JSON.stringify(<?= $get_detail_member->no_member ?>))
                         }
+
                         location.reload()
 
                     } else {

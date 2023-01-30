@@ -29,6 +29,12 @@ class Laporan extends CI_Controller
 	}
 
 
+	function laporan_transaksi_point()
+	{
+		$data['data'] = $this->m_laporan->get_list_penjualan_transaksi_point();
+		$this->load->view('admin/laporan/v_lap_transaksi_point', $data);
+	}
+
 	function laporan_transaksi()
 	{
 		$data['data'] = $this->m_laporan->get_list_penjualan_transaksi();
