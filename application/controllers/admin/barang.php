@@ -30,11 +30,11 @@ class Barang extends CI_Controller
 	{
 		$list = $this->m_barang->get_datatables();
 		$data = array();
-		$no = $_POST['start'] + 1;
+		$no = $_POST['start'];
 		foreach ($list as $value) {
-
+			$no++;
 			$row = array();
-			$row[] = $no++;
+			$row[] = $no;
 			$row[] = $value->barang_id;
 			$row[] = $value->barang_nama;
 			$row[] = $value->barang_satuan;
