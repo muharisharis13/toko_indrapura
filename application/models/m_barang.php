@@ -3,7 +3,7 @@ class M_barang extends CI_Model
 {
 
 	private $table = "tbl_barang";
-	private $primary = "barang_id";
+	private $primary = "id";
 	var $column_order = array('id', 'barang_id', 'barang_nama', 'barang_satuan', 'barang_status', 'barang_harpok', 'barang_harjul', 'barang_harjul_grosir', 'barang_stok', 'barang_min_stok', 'barang_kategori_id',  null); //set column field database for datatable orderable
 	var $column_search = array('barang_id', 'barang_nama'); //set column field database for datatable searchable 
 	var $order = array('id' => 'DESC'); // default order 
