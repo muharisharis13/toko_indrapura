@@ -35,6 +35,12 @@ class M_member extends CI_Model
     );
   }
 
+  function search_member($val){
+    return $this->db->query(
+      "select * from tbl_member where nama_user like '%$val%' OR no_hp_user like '%$val%' OR no_member like '%$val%'"
+    );
+  }
+
   function hapus_member($id)
   {
     return $this->db->query(
@@ -46,6 +52,12 @@ class M_member extends CI_Model
   {
     return $this->db->query(
       "select * from tbl_member where id=$id"
+    )->row();
+  }
+  function get_detail_member_by_no($id)
+  {
+    return $this->db->query(
+      "select * from tbl_member where no_member='$id'"
     )->row();
   }
 

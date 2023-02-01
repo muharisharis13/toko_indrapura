@@ -92,9 +92,9 @@
                                 <td style="text-align:right;"><?php echo number_format($items['amount']); ?></td>
                                 <!-- <td style="text-align:right;"><?php echo number_format($items['disc']); ?></td> -->
                                 <td style="text-align:center;">
-                                    <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post">
+                                    <form action="<?= base_url('admin/penjualan/updateQty') ?>" method="post" class='item_qty_form'>
                                         <input type="hidden" value="<?= $items['id'] ?>" name="update_kobar">
-                                        <input type="text" name="update_qty" value="<?php echo $items['qty']; ?>">
+                                        <input type="text" name="update_qty" value="<?php echo $items['qty']; ?>" onblur="update_qty_func()">
                                         <input type="hidden" name="amount" value="<?php echo $items['amount'] ?>">
                                     </form>
                                 </td>
@@ -112,21 +112,33 @@
 
                         <tr>
                             <td style="width:760px;" rowspan="3">
-                                <button type="submit" class="btn btn-info btn-lg"> Simpan</button>
-                                <?php
-                                if (count($cart) > 0) {
+                                <div style="display: flex;align-items:center;gap: 5px;">
+                                    <button type="submit" class="btn btn-info btn-lg"> Simpan</button>
+                                    <?php
+                                    if (count($cart) > 0) {
 
 
-                                ?>
-                                    <button type="button" id="holding_btn" class="btn btn-warning btn-lg"> Holding</button>
-                                <?php } ?>
+                                    ?>
+                                        <button type="button" id="holding_btn" class="btn btn-warning btn-lg"> Holding</button>
+                                    <?php } ?>
 
-                                <?php if (count($cart) == 0) {
-                                ?>
-                                    <button type="button" id="list_holding" class="btn btn-success btn-lg" data-toggle="modal" data-target="#listHoldingModal"> List Hold</button>
-                                <?php
-                                }
-                                ?>
+                                    <?php if (count($cart) == 0) {
+                                    ?>
+                                        <button type="button" id="list_holding" class="btn btn-success btn-lg" data-toggle="modal" data-target="#listHoldingModal"> List Hold</button>
+                                    <?php
+                                    }
+                                    ?>
+                                    <?php if (!$this->session->userdata('no_member_session')) { ?>
+                                        <button type="button" id="member_btn" type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#member_mdl"> Masukkan Member</button>
+                                    <?php } else { ?>
+                                        <div class="form-inline" id="member_selected_cont">
+                                            <input type="text" class="form-control" style="width: 12rem;" id="member_selected" name="member" readonly value="<?= $this->session->userdata("nama_member_session") ?>" />
+                                            <input type="hidden" name="no_member" value="<?= $this->session->userdata("no_member_session") ?>" />
+                                            <button type="button" id="batal_member_btn" class="btn btn-danger">Batal</button>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+
 
                             </td>
                             <th style="width:140px;">Total Belanja(Rp)</th>
@@ -165,6 +177,40 @@
                 <hr />
             </div>
             <!-- /.row -->
+
+
+            <!-- Modal Member -->
+            <div class="modal fade" id="member_mdl" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Member</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <input value="" type="search" id="cari_member_input" class="form-control" />
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="button" id="cari_member_btn" class="btn btn-success">Cari Member</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="result_member" style="">
+                                <!--  -->
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-dark" type="button" data-dismiss="modal">Batal</button>
+                            <button class="btn btn-warning" type="button" id="pilih_member_btn">Pilih</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- ============ MODAL ADD =============== -->
             <div class="modal fade" id="listHoldingModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -372,7 +418,77 @@
             }
         </script>
         <script type="text/javascript">
+            <?php if (!$this->session->userdata("no_member_session")) { ?>
+                $("#pilih_member_btn").hide()
+                $("#member_selected_cont").hide()
+            <?php } else {
+            ?>
+
+                $("#member_selected_cont").show()
+            <?php
+            } ?>
+
+            function update_qty_func(){
+                $(".item_qty_form").trigger('submit')
+            }
+            $('#pilih_member_btn').click(function() {
+                var id_member = $("#id_member_mdl").val()
+                $.ajax({
+                    url: '<?= base_url('admin/member/pilih_member') ?>/' + id_member,
+                    cache: false,
+                    method: "GET",
+                    success: function(res) {
+                        let data = JSON.parse(res)
+                        $("#member_selected_cont").show()
+                        // $("#member_btn").hide()
+                        // $("#member_selected").val(data.nama_user)
+                        // $("input[name=no_member]").val(data.no_member)
+                        location.reload()
+                        $('#listHoldingModal').modal('hide')
+                    }
+                })
+            })
+
+            $("#batal_member_btn").click(function() {
+                $.ajax({
+                    url: '<?= base_url('admin/member/batal_member') ?>',
+                    cache: false,
+                    method: "GET",
+                    success: function(res) {
+                        location.reload();
+                    }
+                })
+            })
+
+
+
+            function getDetailMember(id) {
+                $.ajax({
+                    url: '<?= base_url('admin/member/detail') ?>/' + id,
+                    cache: false,
+                    method: "GET",
+                    success: function(res) {
+                        $("#pilih_member_btn").show()
+                        $("#result_member").html(res)
+                    }
+                })
+            }
             $(function() {
+                $("#cari_member_btn").click(function() {
+                    var username = $("#cari_member_input").val()
+                    $.ajax({
+                        url: '<?= base_url('admin/member/search') ?>/' + username,
+                        cache: false,
+                        method: "GET",
+                        success: function(res) {
+                            $("#result_member").css("height", "250px")
+                            $("#result_member").html(res)
+                        }
+                    })
+                })
+
+
+
                 $('#jual_diskon').on('input', function() {
 
                     let jual_diskon = $('#jual_diskon').val().replace(/[^\d]/g, "")

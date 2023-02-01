@@ -13,6 +13,7 @@ class Penjualan extends CI_Controller
 		$this->load->model('m_suplier');
 		$this->load->model('m_penjualan');
 		$this->load->model('m_cart');
+		$this->load->model('m_member');
 	}
 
 
@@ -20,6 +21,8 @@ class Penjualan extends CI_Controller
 
 	function index()
 	{
+
+
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
 			$data['data'] = $this->m_barang->tampil_barang();
 			$data['cari'] = $this->m_barang->cari_barang();
@@ -201,6 +204,39 @@ class Penjualan extends CI_Controller
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;
 
+			// Section Member
+			if ($this->input->post('no_member')) {
+				// Get Point
+				$total = $total;
+				$point = $total / 25000;
+				$point = (int) $point;
+
+				// Get Uang
+				$cart = $this->m_cart->tampil_cart()->result_array();
+
+				$subtotal_uang = 0;
+				foreach ($cart as $c) {
+					$laba_bersih = ((int) $c['price'] - (int)$c['harpok']) * (int)$c['qty'];
+					$subtotal_uang += $laba_bersih;
+				}
+				$total_uang = $subtotal_uang * (4 / 100);
+
+				$no_member = $this->input->post('no_member');
+
+				$data_member = $this->m_member->get_detail_member_by_no($no_member);
+
+				$data_update_point = [
+					'uang' =>  (int)$data_member->uang + (int)$total_uang,
+					'point' => (int)$data_member->point + (int) $point
+				];
+				$this->m_member->update_point($no_member, $data_update_point);
+				
+				$this->session->unset_userdata("no_member_session");
+				$this->session->unset_userdata("nama_member_session");
+			}
+
+
+			// End Section Member
 			// var_dump($jual_diskon);
 			// die;
 			if (!empty($total) && !empty($jml_uang)) {

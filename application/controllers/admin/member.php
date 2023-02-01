@@ -47,6 +47,90 @@ class Member extends CI_Controller
         redirect('admin/member');
     }
 
+    public function search($user='')
+    {
+        
+        $data = $this->m_member->search_member($user)->result_array();
+        if (count($data) > 0 && $user !='') {
+?>
+            <table class="table table-striped table-bordered" style="margin-top: 15px;">
+                <tr>
+                    <th>No.Member</th>
+                    <th>Nama</th>
+                    <th>No.Hp</th>
+                    <th>Point</th>
+                    <th>Aksi</th>
+                </tr>
+                <?php foreach ($data as $val) { ?>
+                    <tr>
+                        <td><?= $val['no_member'] ?></td>
+                        <td><?= $val['nama_user'] ?></td>
+                        <td><?= $val['no_hp_user'] ?></td>
+                        <td><?= $val['point'] ?></td>
+                        <td><button class="btn btn-success" onclick="getDetailMember('<?= $val['id'] ?>')">Pilih</button></td>
+                    </tr>
+                <?php } ?>
+            </table>
+
+        <?php
+        } else {
+        ?>
+            <div id="detail_member" style="margin-top: 15px;display:flex;align-items:center;justify-content:center;text-align:center;height:250px;">
+                <b> Not Found </b>
+            </div>
+        <?php
+        }
+    }
+
+    public function detail($id)
+    {
+
+        $data = $this->m_member->get_detail_member($id);
+        ?>
+        <input type="hidden" name="id_member_mdl" id="id_member_mdl" value="<?= $id ?>"/>
+        <div id="detail_member" style="margin-top: 15px;vertical-align:middle;align-items:center;">
+            <table>
+                <tr>
+                    <th>Nama Member</th>
+                    <td>:</td>
+                    <td><?= $data->nama_user ?></td>
+                </tr>
+                <tr>
+                    <th>No.Member</th>
+                    <td>:</td>
+                    <td><?= $data->no_member ?></td>
+                </tr>
+                <tr>
+                    <th>Point Member</th>
+                    <td>:</td>
+                    <td><?= $data->point ?> Point</td>
+                </tr>
+                <tr>
+                    <th>Member Sejak</th>
+                    <td>:</td>
+                    <td><?= date('d-m-Y', strtotime($data->createdAt)) ?></td>
+                </tr>
+            </table>
+        </div>
+<?php
+    }
+
+    public function pilih_member($id){
+        $data = $this->m_member->get_detail_member($id);
+        $this->session->set_userdata("no_member_session",$data->no_member);
+        $this->session->set_userdata("nama_member_session",$data->nama_user);
+        echo json_encode($data);
+    }
+
+   
+
+    public function batal_member(){
+        $this->session->unset_userdata("no_member_session");
+        $this->session->unset_userdata("nama_member_session");
+        // $data = $this->m_member->get_detail_member($id);
+        // echo json_encode($data);
+    }
+
     public function hapus_member()
     {
 
