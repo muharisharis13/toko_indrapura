@@ -216,7 +216,7 @@ class Penjualan extends CI_Controller
 
 				$subtotal_uang = 0;
 				foreach ($cart as $c) {
-					$laba_bersih = ((int) $c['price'] - (int)$c['harpok']) * (int)$c['qty'];
+					$laba_bersih = ((int) $c['price'] - (int)$c['harpok']) * $c['qty'];
 					$subtotal_uang += $laba_bersih;
 				}
 				$total_uang = $subtotal_uang * (4 / 100);
