@@ -9,6 +9,7 @@ class Member extends CI_Controller
             redirect($url);
         };
         $this->load->model("m_member");
+        $this->load->model("m_cart");
         $this->load->model("m_barang");
         $this->load->model("m_penjualan");
     }
@@ -47,11 +48,11 @@ class Member extends CI_Controller
         redirect('admin/member');
     }
 
-    public function search($user='')
+    public function search($user = '')
     {
-        
+
         $data = $this->m_member->search_member($user)->result_array();
-        if (count($data) > 0 && $user !='') {
+        if (count($data) > 0 && $user != '') {
 ?>
             <table class="table table-striped table-bordered" style="margin-top: 15px;">
                 <tr>
@@ -87,7 +88,7 @@ class Member extends CI_Controller
 
         $data = $this->m_member->get_detail_member($id);
         ?>
-        <input type="hidden" name="id_member_mdl" id="id_member_mdl" value="<?= $id ?>"/>
+        <input type="hidden" name="id_member_mdl" id="id_member_mdl" value="<?= $id ?>" />
         <div id="detail_member" style="margin-top: 15px;vertical-align:middle;align-items:center;">
             <table>
                 <tr>
@@ -115,18 +116,47 @@ class Member extends CI_Controller
 <?php
     }
 
-    public function pilih_member($id){
+    public function pilih_member($id, $total = 0)
+    {
         $data = $this->m_member->get_detail_member($id);
-        $this->session->set_userdata("no_member_session",$data->no_member);
-        $this->session->set_userdata("nama_member_session",$data->nama_user);
+        $this->session->set_userdata("id_member_session", $id);
+        $this->session->set_userdata("no_member_session", $data->no_member);
+        $this->session->set_userdata("nama_member_session", $data->nama_user);
+
+        // Get Point
+        $total = $total;
+        $point = $total / 25000;
+        $point = (int) $point;
+
+        // Get Uang
+
+        $total_uang = 0;
+        if ($point > 0) {
+            $cart = $this->m_cart->tampil_cart()->result_array();
+            $subtotal_uang = 0;
+            foreach ($cart as $c) {
+                $laba_bersih = ((int) $c['price'] - (int)$c['harpok']) * $c['qty'];
+                $subtotal_uang += $laba_bersih;
+            }
+            $total_uang = $subtotal_uang * (4 / 100);
+            $data->point_get = $point;
+            $data->uang_get = $total_uang;
+        }
+        $this->session->set_userdata("point_get_session", $point);
+        $this->session->set_userdata("uang_get_session", (int) $total_uang);
         echo json_encode($data);
     }
 
-   
 
-    public function batal_member(){
+
+    public function batal_member()
+    {
+        $this->session->unset_userdata("id_member_session");
         $this->session->unset_userdata("no_member_session");
         $this->session->unset_userdata("nama_member_session");
+
+        $this->session->unset_userdata("point_get_session");
+        $this->session->unset_userdata("uang_get_session");
         // $data = $this->m_member->get_detail_member($id);
         // echo json_encode($data);
     }

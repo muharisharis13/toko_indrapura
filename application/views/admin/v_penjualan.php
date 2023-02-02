@@ -171,7 +171,18 @@
                             <th>Kembalian(Rp)</th>
                             <th style="text-align:right;"><input disabled type="text" id="kembalian" name="kembalian" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" required></th>
                         </tr>
-
+                        <?php if ($this->session->userdata("no_member_session")) { ?>
+                            <tr>
+                                <td></td>
+                                <th>Point Di Dapat</th>
+                                <th style="text-align:right;"><input disabled type="text" id="point_didapat" name="point_didapat" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" value="<?= $this->session->userdata("point_get_session") ?>" required></th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <th>Point = Uang</th>
+                                <th style="text-align:right;"><input disabled type="text" id="point_uang" name="point_uang" class="form-control input-sm" style="text-align:right;margin-bottom:5px;" value="<?= $this->session->userdata("uang_get_session") ?>" required></th>
+                            </tr>
+                        <?php } ?>
                     </table>
                 </form>
                 <hr />
@@ -428,16 +439,19 @@
             <?php
             } ?>
 
-            function update_qty_func(){
+            function update_qty_func() {
                 $(".item_qty_form").trigger('submit')
             }
             $('#pilih_member_btn').click(function() {
                 var id_member = $("#id_member_mdl").val()
+
+                let total = $('#total').val()
                 $.ajax({
-                    url: '<?= base_url('admin/member/pilih_member') ?>/' + id_member,
+                    url: '<?= base_url('admin/member/pilih_member') ?>/' + id_member + '/' + total,
                     cache: false,
                     method: "GET",
                     success: function(res) {
+                        console.log(res)
                         let data = JSON.parse(res)
                         $("#member_selected_cont").show()
                         // $("#member_btn").hide()

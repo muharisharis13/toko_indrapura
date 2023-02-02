@@ -28,6 +28,7 @@ class Penjualan extends CI_Controller
 			$data['cari'] = $this->m_barang->cari_barang();
 			$data['cart'] =  $this->m_cart->tampil_cart()->result_array();
 			$data['hold'] = $this->m_cart->tampil_hold()->result_array();
+			$this->load->library('../controllers/admin/member');
 			$this->load->view('admin/v_penjualan', $data);
 		} else {
 			echo "Halaman tidak ditemukan";
@@ -64,7 +65,10 @@ class Penjualan extends CI_Controller
 
 		$this->m_cart->update_qty_cart($qty_baru, $subtotal_baru, $kobar);
 
-
+		if ($this->session->userdata('id_member_session')) {
+			$id_member = $this->session->userdata('id_member_session');
+			$this->pilih_member($id_member);
+		}
 
 
 		// foreach ($this->cart->contents() as $items) {
@@ -90,6 +94,7 @@ class Penjualan extends CI_Controller
 	{
 
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
+			$subtotal_uang = 0;
 			if ($id_holding) {
 				$get_holidng_by_id = $this->m_cart->get_holding_by_id($id_holding);
 				$data_hold = json_decode($get_holidng_by_id[0]['list_item']);
@@ -134,6 +139,7 @@ class Penjualan extends CI_Controller
 					'subtotal' => $i['barang_harjul'] * 1
 				);
 
+				$subtotal_uang += $i['barang_harjul'] * 1;
 				$count_cart = count($this->m_cart->tampil_cart()->result_array());
 
 				if ($count_cart > 0) {
@@ -164,15 +170,30 @@ class Penjualan extends CI_Controller
 									'subtotal' => $subtotal_baru
 								);
 								// $this->cart->update($up);
+								$subtotal_uang += $subtotal_baru;
 								$this->m_cart->update_qty_cart($qty_baru, $subtotal_baru, $id);
 							}
 						}
+						if ($this->session->userdata('id_member_session')) {
+							$id_member = $this->session->userdata('id_member_session');
+							$this->pilih_member($id_member);
+						}
 					} else {
+
 						$this->m_cart->simpan_cart($data);
+						if ($this->session->userdata('id_member_session')) {
+							$id_member = $this->session->userdata('id_member_session');
+							$this->pilih_member($id_member);
+						}
 					}
 				} else {
+
 					// $this->cart->insert($data);
 					$this->m_cart->simpan_cart($data);
+					if ($this->session->userdata('id_member_session')) {
+						$id_member = $this->session->userdata('id_member_session');
+						$this->pilih_member($id_member);
+					}
 				}
 				redirect('admin/penjualan');
 			}
@@ -180,6 +201,46 @@ class Penjualan extends CI_Controller
 			echo "Halaman tidak ditemukan";
 		}
 	}
+
+
+	public function pilih_member($id)
+	{
+		$data = $this->m_member->get_detail_member($id);
+		$this->session->set_userdata("no_member_session", $data->no_member);
+		$this->session->set_userdata("nama_member_session", $data->nama_user);
+
+
+
+		// Get Uang
+		$cart = $this->m_cart->tampil_cart()->result_array();
+
+		$subtotal_uang = 0;
+		$subtotal = 0;
+		foreach ($cart as $c) {
+			$laba_bersih = ((int) $c['price'] - (int)$c['harpok']) * $c['qty'];
+			$subtotal_uang += $laba_bersih;
+			$subtotal += (int)$c['subtotal'];
+		}
+
+		// Get Point
+
+		$total = $subtotal;
+		$point = $total / 25000;
+		$point = (int) $point;
+		$total_uang = 0;
+		if ($point > 0) {
+
+
+			$total_uang = $subtotal_uang * (4 / 100);
+			$data->point_get = $point;
+			$data->uang_get = $total_uang;
+		}
+
+		$this->session->set_userdata("point_get_session", $point);
+		$this->session->set_userdata("uang_get_session", (int) $total_uang);
+		echo json_encode($data);
+	}
+
 	function remove()
 	{
 		if ($this->session->userdata('akses') == '1' || $this->session->userdata('akses') == '2') {
@@ -189,6 +250,10 @@ class Penjualan extends CI_Controller
 			// 	'qty'     => 0
 			// ));
 			$this->m_cart->hapus_cart($row_id);
+			if ($this->session->userdata('id_member_session')) {
+				$id_member = $this->session->userdata('id_member_session');
+				$this->pilih_member($id_member);
+			}
 			redirect('admin/penjualan');
 		} else {
 			echo "Halaman tidak ditemukan";
@@ -230,12 +295,13 @@ class Penjualan extends CI_Controller
 					'point' => (int)$data_member->point + (int) $point
 				];
 				$this->m_member->update_point($no_member, $data_update_point);
-				
+
+				$this->session->unset_userdata("id_member_session");
 				$this->session->unset_userdata("no_member_session");
 				$this->session->unset_userdata("nama_member_session");
+				$this->session->unset_userdata("point_get_session");
+				$this->session->unset_userdata("uang_get_session");
 			}
-
-
 			// End Section Member
 			// var_dump($jual_diskon);
 			// die;
