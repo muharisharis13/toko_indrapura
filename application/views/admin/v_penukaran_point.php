@@ -52,9 +52,6 @@
                     <input type="text" style="text-transform: uppercase;" class="form-control" name="no_member" value="<?= $get_detail_member->no_member ?>" readonly>
                 </div>
                 <div class="col-md-3">
-                    <?php
-                    print_r($get_detail_member);
-                    ?>
                     <label for="">No. Handphone</label>
                     <input type="text" class="form-control" name="no_hp_user" value="<?= $get_detail_member->no_hp_user ?>" readonly>
                 </div>

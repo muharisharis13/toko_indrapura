@@ -6,13 +6,13 @@ class M_barang extends CI_Model
 	private $primary = "id";
 	var $column_order = array('id', 'barang_id', 'barang_nama', 'barang_satuan', 'barang_status', 'barang_harpok', 'barang_harjul', 'barang_harjul_grosir', 'barang_stok', 'barang_min_stok', 'barang_kategori_id',  null); //set column field database for datatable orderable
 	var $column_search = array('barang_id', 'barang_nama'); //set column field database for datatable searchable 
-	var $order = array('id' => 'DESC'); // default order 
+	var $order = array('id' => 'ASC'); // default order 
 	private function _get_datatables_query()
 	{
 		$this->db->select('*');
 		$this->db->from($this->table);
 		$this->db->join('tbl_kategori', 'tbl_kategori.kategori_id=tbl_barang.barang_kategori_id');
-		$this->db->order_by($this->primary, 'DESC');
+		$this->db->order_by($this->primary, 'ASC');
 		$i = 0;
 		foreach ($this->column_search as $item) // loop column 
 		{

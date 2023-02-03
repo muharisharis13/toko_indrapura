@@ -34,10 +34,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <center><?php echo $this->session->flashdata('msg'); ?>
+                <center>
                     <?php if ($this->session->flashdata('success')) { ?>
                         <span class="alert alert-success"><?= $this->session->flashdata('success') ?></span>
-                    <?php } else { ?>
+                    <?php } elseif ($this->session->flashdata('err')) { ?>
                         <span class="alert alert-danger"><?= $this->session->flashdata('err') ?></span>
                     <?php } ?>
                 </center>
