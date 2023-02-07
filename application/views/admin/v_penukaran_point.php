@@ -195,6 +195,40 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
+        window.onload = checkCartPointFunc()
+
+        function checkCartPointFunc() {
+            let checkCartPoint = localStorage.getItem("cart_point");
+            let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+
+            console.log("hahaha", cartPoint)
+
+            if (cartPoint.length != 0) {
+                // return false
+                $("#tukar_point_btn").prop("disabled", false)
+            } else {
+                // return true
+
+                $("#tukar_point_btn").prop("disabled", true)
+            }
+            return
+        }
+
+        function handleQty(qty, id) {
+
+            let barang_harjul = $('#barang_harjul').val() ? parseInt($('#barang_harjul').val()) : 0;
+            let checkCartPoint = localStorage.getItem("cart_point");
+            let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+
+
+            localStorage.setItem("cart_point", JSON.stringify(cartPoint.map(item => ({
+                ...item,
+                qty: item.id == id ? qty : item.qty,
+                subTotal: parseFloat(qty) * parseInt(barang_harjul)
+            }))))
+        }
+    </script>
+    <script>
         $(document).ready(() => {
             $(".select-product").select2();
 
@@ -232,9 +266,10 @@
                                         <input id="barang_harjul" value=${item.barang_harjul} type="hidden" />
                                     </td>
                                     <td>
-                                        <form >
-                                            <input class=' form-control' name="qty" id="qty" value=${item.qty} />
-                                        </form>
+                                       <form>
+                                       <input class=' form-control' name="qty" id="qty" onchange="handleQty(this.value,${item.id})" value=${item.qty} />
+                                       </form>
+                                       
                                     </td>
                                     <td>
                                         ${subTotal}
@@ -255,18 +290,20 @@
                 document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
             })
 
-            $("#qty").on("input", () => {
-                let qty = $("#qty").val() ? parseFloat($("#qty").val()) : 0;
-                let barang_harjul = $('#barang_harjul').val() ? parseInt($('#barang_harjul').val()) : 0;
-                let checkCartPoint = localStorage.getItem("cart_point");
-                let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
 
-                localStorage.setItem("cart_point", JSON.stringify(cartPoint.map(item => ({
-                    ...item,
-                    qty: qty,
-                    subTota: parseFloat(qty) * parseInt(barang_harjul)
-                }))))
-            })
+
+            // $("#qty").on("input", () => {
+            //     let qty = $("#qty").val() ? parseFloat($("#qty").val()) : 0;
+            //     let barang_harjul = $('#barang_harjul').val() ? parseInt($('#barang_harjul').val()) : 0;
+            //     let checkCartPoint = localStorage.getItem("cart_point");
+            //     let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
+
+            //     localStorage.setItem("cart_point", JSON.stringify(cartPoint.map(item => ({
+            //         ...item,
+            //         qty: qty,
+            //         subTota: parseFloat(qty) * parseInt(barang_harjul)
+            //     }))))
+            // })
 
             $('#create').submit(function(e) {
                 e.preventDefault();
@@ -317,47 +354,55 @@
             let cartPointMap = checkCartPointItem ? JSON.parse(checkCartPointItem) : [];
             var total = 0
             $('#table_product').html('')
-            cartPointMap.map((item, index) => {
-                let subTotal = parseInt(item.qty) * parseInt(item.barang_harjul)
-                total += subTotal
-                let html = `
-                                <tr>
-                                    <td>                            
-                                        ${item.id}
-                                    </td>
-                                    <td>
-                                        ${item.barang_id}
-                                    </td>
-                                    <td>
-                                        ${item.barang_nama}
-                                    </td>
-                                    <td>
-                                        ${item.barang_satuan}
-                                    </td>
-                                    <td>
-                                        ${item.barang_harjul}
-                                    </td>
-                                    <td>
-                                        ${item.qty}
-                                    </td>
-                                    <td>
-                                        ${subTotal}
-                                    </td>
-                                    <td style="text-align:end;">
-                                            <button class="btn btn-sm btn-danger" type='button' onclick="removeItem(${index})">
-                                                Delete
-                                            </button>
-                                    </td>
-                                </tr>
-                            `
-                $('#table_product').append(html)
-                var total_keseluruhan = $('#total3').val(total)
-                var tunai = $('#jml_uang').val()
-                $('#kembalian').val(tunai - total)
+            if (cartPointMap.length == 0) {
+                $('#total3').val(0)
+                $('#kembalian').val(0)
+                $("#tukar_point_btn").prop("disabled", true)
+            } else {
+                cartPointMap.map((item, index) => {
+                    let subTotal = parseInt(item.qty) * parseInt(item.barang_harjul)
+                    total += subTotal
+                    let html = `
+                                    <tr>
+                                        <td>                            
+                                            ${item.id}
+                                        </td>
+                                        <td>
+                                            ${item.barang_id}
+                                        </td>
+                                        <td>
+                                            ${item.barang_nama}
+                                        </td>
+                                        <td>
+                                            ${item.barang_satuan}
+                                        </td>
+                                        <td>
+                                            ${item.barang_harjul}
+                                        </td>
+                                        <td>
+                                           <form>
+                                           <input class=' form-control' name="qty" id="qty" onchange="handleQty(this.value,${item.id})" value=${item.qty} />
+                                           </form>
+                                        </td>
+                                        <td>
+                                            ${subTotal}
+                                        </td>
+                                        <td style="text-align:end;">
+                                                <button class="btn btn-sm btn-danger" type='button' onclick="removeItem(${index})">
+                                                    Delete
+                                                </button>
+                                        </td>
+                                    </tr>
+                                `
+                    $('#table_product').append(html)
+                    var total_keseluruhan = $('#total3').val(total)
+                    var tunai = $('#jml_uang').val()
+                    $('#kembalian').val(tunai - total)
 
-                document.getElementById('nama_mems').innerHTML = 'Nama : <?= $get_detail_member->nama_user ?>';
-                document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
-            })
+                    document.getElementById('nama_mems').innerHTML = 'Nama : <?= $get_detail_member->nama_user ?>';
+                    document.getElementById('point_mems').innerHTML = 'Point : <?= $get_detail_member->point ?>';
+                })
+            }
         }
 
         function allItem() {
@@ -377,24 +422,34 @@
                     id: selectedValue
                 },
                 success: (result) => {
-                    console.log({
-                        result: JSON.parse(result)
-                    })
+                    console.log(JSON.parse(result))
                     let checkCartPoint = localStorage.getItem("cart_point");
                     let cartPoint = checkCartPoint ? JSON.parse(checkCartPoint) : [];
 
 
                     if (JSON.parse(result)?.id) {
+                        let idLocal = JSON.parse(result)?.id
                         let product = JSON.parse(result)
                         if (cartPoint.length > 0) {
-                            localStorage.setItem("cart_point", JSON.stringify([
+                            if (cartPoint?.find(find => find.id == idLocal)) {
+                                console.log("masuk dia")
+                                localStorage.setItem("cart_point", JSON.stringify(cartPoint.map(item => ({
+                                    ...item,
+                                    qty: item.id == idLocal ? parseFloat(item.qty) + 1 : item.qty,
+                                    subTotal: item.id == idLocal ? parseFloat(parseFloat(item.qty) + 1) * parseInt(barang_harjul) : parseFloat(item.qty) * parseInt(barang_harjul)
+                                }))))
 
-                                ...cartPoint,
-                                {
-                                    ...product,
-                                    qty: 1
-                                }
-                            ]))
+                            } else {
+
+                                localStorage.setItem("cart_point", JSON.stringify([
+
+                                    ...cartPoint,
+                                    {
+                                        ...product,
+                                        qty: 1
+                                    }
+                                ]))
+                            }
                             // localStorage.setItem("no_member", JSON.stringify(<?= $get_detail_member->no_member ?>))
 
                         } else {
