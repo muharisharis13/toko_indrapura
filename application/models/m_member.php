@@ -60,6 +60,18 @@ class M_member extends CI_Model
       "select * from tbl_member where no_member='$id'"
     )->row();
   }
+  function get_detail_member_by_no_hp($no_hp)
+  {
+    return $this->db->query(
+      "select * from tbl_member where no_hp_user='$no_hp'"
+    )->result_array();
+  }
+
+  function update_no_hp_member($no_member, $data){
+    $this->db->select('*')->from('tbl_member')->where('no_member', $no_member);
+    $res = $this->db->update('tbl_member', $data);
+    return $res;
+  }
 
   function get_detail_product($id_product)
   {

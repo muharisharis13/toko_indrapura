@@ -73,6 +73,7 @@
             </div>
         </div>
         <button class="btn btn-primary" data-toggle="modal" data-target="#createMember"><i class="fa fa-plus-circle"></i> Tambah Member</button>
+        <button class="btn btn-warning" data-toggle="modal" data-target="#editMember"><i class="fa fa-edit"></i> No.Hp Member</button>
 
     </div>
     <div class="container" style="margin-top: 50px;">
@@ -134,11 +135,12 @@
                                     ?>
                                 </td>
                                 <td style="text-align: end;" onclick="event.stopPropagation()">
+
                                     <button class="btn btn-sm btn-warning" onclick='location.href="<?= base_url("admin/member/penukaran_point/$item[id]") ?>"'>
                                         <i class="fa fa-gift"></i> Penukaran Point
                                     </button>
                                     <button class="btn btn-sm btn-danger" onclick="hapus_member('<?php echo $item['id']  ?>')">
-                                        Delete
+                                        <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </td>
                             </tr>
@@ -185,6 +187,52 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Edit No Hp -->
+    <div id="editMember" class="modal fade" role="dialog">
+
+        <div class="modal-dialog">
+            <form method="post" action="<?php echo base_url() . 'admin/member/edit_no_hp' ?>">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit No. Hp Member</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-9">
+                                <label>No. Hp Lama</label>
+                                <input type="number" class="form-control" name="no_hp">
+                            </div>
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn btn-success" id="check_no_hp_btn">Check</button>
+                            </div>
+                        </div>
+                        <div id="result_check_no_hp" style="margin-top: 10px;">
+
+                        </div>
+                        <div class="row" style="margin-top:10px;display:none;" id="no_hp_baru">
+                            <input type="hidden" name="no_member" id="no_member_edit"/>
+                            <div class="col-md-12">
+                                <label>No. Hp Baru - <span id="no_member_lbl"></span></label>
+                                <input type="number" class="form-control" required name="no_hp_baru">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" disabled id="submit_edit_no_hp"><i class="fa fa-save"></i> Simpan</button>
                     </div>
                 </div>
 
@@ -256,9 +304,9 @@
     <script>
         $('#mydataMember').DataTable();
 
-        function print_member(){
+        function print_member() {
             var no_member = $('#no_member').text()
-            window.open('<?= base_url('admin/member/print')?>/' + no_member)
+            window.open('<?= base_url('admin/member/print') ?>/' + no_member)
         }
 
         function card_member(no_member, nama_member) {
@@ -268,6 +316,32 @@
             var url_qrcode = `http://chart.apis.google.com/chart?cht=qr&chs=130x130&chld=L|0&chl=${no_member}`
             $('#img_member_qrcode').prop('src', url_qrcode)
             $("#detailMemberMdl").modal('show')
+        }
+
+        $("#check_no_hp_btn").click(function() {
+            let no_hp = $("#editMember input[name=no_hp]").val()
+            if (no_hp == '') {
+                alert("No Hp Lama Member, Kosong")
+            } else {
+                $.ajax({
+                    url: "member/check_nomor",
+                    type: "POST",
+                    data: {
+                        no_hp: no_hp
+                    },
+                    success: (res) => {
+                        $("#result_check_no_hp").html(res)
+                    }
+                })
+            }
+        })
+
+
+        function pilih_member(no_member) {
+            $("#no_member_lbl").text(no_member + " ( selected )")
+            $("#no_member_edit").val(no_member)
+            $("#no_hp_baru").show()
+            $("#submit_edit_no_hp").attr("disabled",false)
         }
 
         function hapus_member(id) {

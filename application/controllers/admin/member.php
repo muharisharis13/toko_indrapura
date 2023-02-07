@@ -113,7 +113,7 @@ class Member extends CI_Controller
                 </tr>
             </table>
         </div>
-<?php
+        <?php
     }
 
     public function pilih_member($id, $total = 0)
@@ -164,6 +164,59 @@ class Member extends CI_Controller
         $this->load->view('admin/laporan/v_kartu_member', $data);
     }
 
+    public function check_nomor()
+    {
+        $no_hp = $this->input->post('no_hp');
+        $data_member = $this->m_member->get_detail_member_by_no_hp($no_hp);
+        if (count($data_member) > 0) {
+        ?>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>No Member</th>
+                    <th>Nama Member</th>
+                    <th>No.HP</th>
+                    <th>Aksi</th>
+                </tr>
+                <?php foreach ($data_member as $member) : ?>
+                    <tr>
+                        <td><?= $member['no_member'] ?></td>
+                        <td><?= $member['nama_user'] ?></td>
+                        <td><?= $member['no_hp_user'] ?></td>
+                        <td><button class="btn btn-info" type="button" onclick="pilih_member('<?= $member['no_member'] ?>')">Pilih</button></td>
+
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php
+        } else {
+        ?>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>No Member</th>
+                    <th>Nama Member</th>
+                    <th>No.HP</th>
+                    <th>Aksi</th>
+                </tr>
+
+                <tr>
+                    <td colspan="5">Member Tidak Ada</td>
+                </tr>
+            </table>
+        <?php
+        }
+    }
+
+    public function edit_no_hp(){
+        $no_member = $this->input->post('no_member');
+        $no_hp = $this->input->post('no_hp_baru');
+
+        $data = array(
+            "no_hp_user" => $no_hp
+        );
+
+        $this->m_member->update_no_hp_member($no_member, $data);
+        redirect('admin/member');
+    }
 
     public function batal_member()
     {
