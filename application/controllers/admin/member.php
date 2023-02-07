@@ -147,6 +147,22 @@ class Member extends CI_Controller
         echo json_encode($data);
     }
 
+    public function print($no_member)
+    {
+
+        $data['title'] = "Print Kartu Member";
+        $data_member = $this->m_member->get_detail_member_by_no($no_member);
+        $nama_member = "member_not_found";
+        if (!$data_member) {
+            $nama_member = "member_not_found";
+        } else {
+
+            $nama_member = $data_member->nama_user;
+        }
+        $data['no_member'] = $no_member;
+        $data['nama_member'] = $nama_member;
+        $this->load->view('admin/laporan/v_kartu_member', $data);
+    }
 
 
     public function batal_member()

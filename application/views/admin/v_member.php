@@ -10,7 +10,33 @@
     <meta name="author" content="Mesproject">
 
     <title><?= $title ?></title>
+    <style>
+        .card-member-container {
+            background-image: url();
+            background-position: center;
+            /* background-repeat: no-repeat; */
+            width: 100%;
+            height: 300px;
+            padding: 2rem;
+            align-items: center;
+            padding: 10px;
+            position: static;
+        }
 
+        .img_member {
+            object-fit: contain;
+            width: 100%;
+            height: 350px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+        }
+
+        .item_member {
+            z-index: 100;
+        }
+    </style>
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url() . 'assets/css/bootstrap.min.css' ?>" rel="stylesheet">
     <link href="<?php echo base_url() . 'assets/css/style.css' ?>" rel="stylesheet">
@@ -71,7 +97,7 @@
 
 
                         ?>
-                            <tr onclick="card_member('<?= $item['id'] ?>')">
+                            <tr onclick="card_member('<?= $item['no_member'] ?>','<?= $item['nama_user'] ?>')">
                                 <td>
                                     <?php
                                     echo $item['id']
@@ -168,36 +194,46 @@
     </div>
 
 
-    <div id="createMember" class="modal fade" role="dialog">
+    <div id="detailMemberMdl" class="modal fade" role="dialog">
 
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header">
+                <!-- <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Tambah Member</h4>
-                </div>
+                </div> -->
                 <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>No. Hp</label>
-                            <input type="number" class="form-control" name="no_hp">
+                    <div class="card-member-container">
+                        <img src="<?php echo base_url() . 'assets/images/bg-member.png' ?>" class="img_member" />
+                        <div class="item_member d-flex align-items-center" style="height: 300px;">
+                            <h3 class="text-center" style="z-index: 100;position:relative;">Member Card Toko Indrapura</h3>
+                            <div class="row">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 10px 0">
+                                    Nama Member
+                                </div>
+                                <div class="col-sm-8" style="margin: 10px 0">
+                                    : <span id="nama_member"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 10px 0">
+                                    No Member
+                                </div>
+                                <div class="col-sm-8" style="margin: 10px 0">
+                                    : <span id="no_member"></span>
+                                </div>
+                            </div>
+                            <div class="qrcode-member" style="margin-top: 2rem;">
+                                <img src="http://chart.apis.google.com/chart?cht=qr&chs=130x130&chld=L|0&chl=012456789" id="img_member_qrcode" style="z-index: 100;position:relative;" />
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Nama</label>
-                            <input type="text" class="form-control" name="nama_user">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label>Alamat</label>
-                            <input type="text" class="form-control" name="alamat">
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="print_member()"><i class="fa fa-print"></i> Print</button>
                 </div>
 
             </div>
@@ -220,8 +256,18 @@
     <script>
         $('#mydataMember').DataTable();
 
-        function card_member(id) {
+        function print_member(){
+            var no_member = $('#no_member').text()
+            window.open('<?= base_url('admin/member/print')?>/' + no_member)
+        }
 
+        function card_member(no_member, nama_member) {
+            $('#nama_member').text(nama_member)
+            $('#no_member').text(no_member)
+
+            var url_qrcode = `http://chart.apis.google.com/chart?cht=qr&chs=130x130&chld=L|0&chl=${no_member}`
+            $('#img_member_qrcode').prop('src', url_qrcode)
+            $("#detailMemberMdl").modal('show')
         }
 
         function hapus_member(id) {
