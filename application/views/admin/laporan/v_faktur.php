@@ -81,6 +81,18 @@
             <td style="text-align:center;"><b><?php echo 'Rp ' . number_format($item['jual_kembalian']); ?></b></td>
 
           </tr>
+          <?php if ($item['member']) { ?>
+            <tr>
+              <td colspan="2" style="text-align:center;"><b>Member</b></td>
+              <td style="text-align:center;"><b><?php echo $item['member'] ?></b></td>
+
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:center;"><b>Point</b></td>
+              <td style="text-align:center;"><b><?php echo $item['point'] ?></b></td>
+
+            </tr>
+          <?php } ?>
         </tfoot>
       </table>
     </div>

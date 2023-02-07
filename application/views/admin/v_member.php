@@ -71,7 +71,7 @@
 
 
                         ?>
-                            <tr>
+                            <tr onclick="card_member('<?= $item['id'] ?>')">
                                 <td>
                                     <?php
                                     echo $item['id']
@@ -107,7 +107,7 @@
                                     echo $item['uang']
                                     ?>
                                 </td>
-                                <td style="text-align: end;">
+                                <td style="text-align: end;" onclick="event.stopPropagation()">
                                     <button class="btn btn-sm btn-warning" onclick='location.href="<?= base_url("admin/member/penukaran_point/$item[id]") ?>"'>
                                         <i class="fa fa-gift"></i> Penukaran Point
                                     </button>
@@ -168,6 +168,44 @@
     </div>
 
 
+    <div id="createMember" class="modal fade" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tambah Member</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>No. Hp</label>
+                            <input type="number" class="form-control" name="no_hp">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Nama</label>
+                            <input type="text" class="form-control" name="nama_user">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Alamat</label>
+                            <input type="text" class="form-control" name="alamat">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?php echo base_url() . 'assets/js/jquery.js' ?>"></script>
 
@@ -182,6 +220,9 @@
     <script>
         $('#mydataMember').DataTable();
 
+        function card_member(id) {
+
+        }
 
         function hapus_member(id) {
             $.ajax({

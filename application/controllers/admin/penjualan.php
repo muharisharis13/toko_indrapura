@@ -269,6 +269,8 @@ class Penjualan extends CI_Controller
 			$jml_uang = str_replace(",", "", $this->input->post('jml_uang'));
 			$kembalian = $jml_uang - $total;
 
+			$nama_member = "";
+			$point_member = 0;
 			// Section Member
 			if ($this->input->post('no_member')) {
 				// Get Point
@@ -289,6 +291,9 @@ class Penjualan extends CI_Controller
 				$no_member = $this->input->post('no_member');
 
 				$data_member = $this->m_member->get_detail_member_by_no($no_member);
+
+				$nama_member = $data_member->nama_user;
+				$point_member = $point;
 
 				$data_update_point = [
 					'uang' =>  (int)$data_member->uang + (int)$total_uang,
@@ -312,7 +317,7 @@ class Penjualan extends CI_Controller
 				} else {
 					$nofak = $this->m_penjualan->get_nofak();
 					$this->session->set_userdata('nofak', $nofak);
-					$order_proses = $this->m_penjualan->simpan_penjualan($nofak, $total, $jml_uang, $kembalian, $jual_diskon);
+					$order_proses = $this->m_penjualan->simpan_penjualan($nofak, $total, $jml_uang, $kembalian, $jual_diskon,$nama_member,$point_member);
 					if ($order_proses) {
 						// $this->cart->destroy();
 						$this->m_cart->hapus_tb_cart();
