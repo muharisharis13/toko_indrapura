@@ -82,28 +82,30 @@ class Laporan extends CI_Controller
 		$bulan_dari = $this->input->post('bln_dari');
 		$bulan_ke = $this->input->post('bln_ke');
 		// Pecah jadi Bulan dan Tahun
-		$bln_awal = $this->formatDateLaporanLabaRugi($bulan_dari, 'bulan');
-		$thn_awal = $this->formatDateLaporanLabaRugi($bulan_dari, 'tahun');
-		$bln_akhir = $this->formatDateLaporanLabaRugi($bulan_ke, 'bulan');
-		$thn_akhir = $this->formatDateLaporanLabaRugi($bulan_ke, 'tahun');
+		// $bln_awal = $this->formatDateLaporanLabaRugi($bulan_dari, 'bulan');
+		// $thn_awal = $this->formatDateLaporanLabaRugi($bulan_dari, 'tahun');
+		// $bln_akhir = $this->formatDateLaporanLabaRugi($bulan_ke, 'bulan');
+		// $thn_akhir = $this->formatDateLaporanLabaRugi($bulan_ke, 'tahun');
 
 		// Simpan data Sementara
-		$thn_awal_dump = $thn_awal;
-		$thn_akhir_dump = $thn_akhir;
-		$bln_awal_dump = $bln_awal;
-		$bln_akhir_dump = $bln_akhir;
+		// $thn_awal_dump = $thn_awal;
+		// $thn_akhir_dump = $thn_akhir;
+		// $bln_awal_dump = $bln_awal;
+		// $bln_akhir_dump = $bln_akhir;
 
 		// Cek Jika Tahun Akhir > Tahun Awal , di ganti karena data tidak muncul jika Data Besar dulu , baru data kecil, untuk bulan disesuaikan dengan tahun yang ditukar
-		if ($thn_awal > $thn_akhir) {
-			$thn_akhir = $thn_awal_dump;
-			$thn_awal = $thn_akhir_dump;
+		// if ($thn_awal > $thn_akhir) {
+		// 	$thn_akhir = $thn_awal_dump;
+		// 	$thn_awal = $thn_akhir_dump;
 
-			$bln_awal = $bln_akhir_dump;
-			$bln_akhir = $bln_awal_dump;
-		}
+		// 	$bln_awal = $bln_akhir_dump;
+		// 	$bln_akhir = $bln_awal_dump;
+		// }
 
-		$x['jml'] = $this->m_laporan->get_total_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir);
-		$x['data'] = $this->m_laporan->get_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir);
+		// $x['jml'] = $this->m_laporan->get_total_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir);
+		$x['jml'] = $this->m_laporan->get_total_lap_laba_rugi($bulan_dari, $bulan_ke);
+		$x['data'] = $this->m_laporan->get_lap_laba_rugi($bulan_dari, $bulan_ke);
+		// $x['data'] = $this->m_laporan->get_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir);
 		$this->load->view('admin/laporan/v_lap_laba_rugi', $x);
 	}
 

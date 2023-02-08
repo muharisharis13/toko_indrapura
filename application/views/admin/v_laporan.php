@@ -246,32 +246,34 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 class="modal-title" id="myModalLabel">Pilih Bulan</h3>
+                        <h3 class="modal-title" id="myModalLabel">Priode Laporan Laba/Rugi</h3>
                     </div>
                     <form class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/laporan/lap_laba_rugi' ?>" target="_blank">
                         <div class="modal-body">
 
                             <div class="form-group">
-                                <label class="control-label col-xs-3">Dari Bulan</label>
+                                <label class="control-label col-xs-3">Dari Tanggal</label>
                                 <div class="col-xs-9">
-                                    <select name="bln_dari" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
+                                    <input type="date" class="form-control" name="bln_dari">
+                                    <!-- <select name="bln_dari" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
                                     <?php foreach ($jual_bln->result_array() as $k) {
                                         $bln = $k['bulan'];
                                     ?>
                                         <option><?php echo $bln; ?></option>
                                     <?php } ?>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-3">Ke Bulan</label>
+                                <label class="control-label col-xs-3">Ke Tanggal</label>
                                 <div class="col-xs-9">
-                                    <select name="bln_ke" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
+                                    <input type="date" class="form-control" name="bln_ke">
+                                    <!-- <select name="bln_ke" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Bulan" data-width="80%" required />
                                     <?php foreach ($jual_bln->result_array() as $k) {
                                         $bln = $k['bulan'];
                                     ?>
                                         <option><?php echo $bln; ?></option>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                     </select>
                                 </div>
                             </div>

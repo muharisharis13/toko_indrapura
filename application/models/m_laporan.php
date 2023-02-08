@@ -62,14 +62,32 @@ class M_laporan extends CI_Model
 		return $hsl;
 	}
 	//=========Laporan Laba rugi============
-	function get_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir)
+	// function get_lap_laba_rugi($start, $end)
+	// {
+	// 	$this->db->select('*')->from('tbl_jual');
+	// 	$this->db->where('jual_tanggal >=', $start);
+	// 	$this->db->where('jual_tanggal <=', $end);
+	// 	$this->db->join('tbl_detail_jual', 'tbl_detail_jual.d_jual_nofak=tbl_jual.jual_nofak');
+	// 	$hsl = $this->db->get();
+	// 	return $hsl;
+	// }
+	function get_lap_laba_rugi($start, $end)
 	{
-		$hsl = $this->db->query("SELECT DATE_FORMAT(jual_tanggal,'%d %M %Y %H:%i:%s') as jual_tanggal,d_jual_barang_nama,d_jual_barang_satuan,d_jual_barang_harpok,d_jual_barang_harjul,(d_jual_barang_harjul-d_jual_barang_harpok) AS keunt,d_jual_qty,d_jual_diskon,((d_jual_barang_harjul-d_jual_barang_harpok)*d_jual_qty)-(d_jual_qty*d_jual_diskon) AS untung_bersih FROM tbl_jual JOIN tbl_detail_jual ON jual_nofak=d_jual_nofak WHERE (YEAR(jual_tanggal)= '$thn_awal' AND MONTH(jual_tanggal) = '$bln_awal' ) OR ( YEAR(jual_tanggal)='$thn_akhir' AND MONTH(jual_tanggal)='$bln_akhir');");
+		$hsl = $this->db->query("SELECT DATE_FORMAT(jual_tanggal,'%d %M %Y %H:%i:%s') as jual_tanggal,d_jual_barang_nama,d_jual_barang_satuan,d_jual_barang_harpok,d_jual_barang_harjul,(d_jual_barang_harjul-d_jual_barang_harpok) AS keunt,d_jual_qty,d_jual_diskon,((d_jual_barang_harjul-d_jual_barang_harpok)*d_jual_qty)-(d_jual_qty*d_jual_diskon) AS untung_bersih FROM tbl_jual JOIN tbl_detail_jual ON jual_nofak=d_jual_nofak WHERE (DATE(jual_tanggal) BETWEEN '$start'  AND '$end');");
 		return $hsl;
 	}
-	function get_total_lap_laba_rugi($thn_awal, $thn_akhir, $bln_awal, $bln_akhir)
+	// function get_total_lap_laba_rugi($start, $end)
+	// {
+	// 	$this->db->select('*')->from('tbl_jual');
+	// 	$this->db->where('jual_tanggal >=', $start);
+	// 	$this->db->where('jual_tanggal <=', $end);
+	// 	$this->db->join('tbl_detail_jual', 'tbl_detail_jual.d_jual_nofak=tbl_jual.jual_nofak');
+	// 	$hsl = $this->db->get();
+	// 	return $hsl;
+	// }
+	function get_total_lap_laba_rugi($start, $end)
 	{
-		$hsl = $this->db->query("SELECT DATE_FORMAT(jual_tanggal,'%M %Y') AS bulan,d_jual_barang_nama,d_jual_barang_satuan,d_jual_barang_harpok,d_jual_barang_harjul,(d_jual_barang_harjul-d_jual_barang_harpok) AS keunt,d_jual_qty,d_jual_diskon,SUM(((d_jual_barang_harjul-d_jual_barang_harpok)*d_jual_qty)-(d_jual_qty*d_jual_diskon)) AS total FROM tbl_jual JOIN tbl_detail_jual ON jual_nofak=d_jual_nofak WHERE (YEAR(jual_tanggal)= '$thn_awal' AND MONTH(jual_tanggal) = '$bln_awal' ) OR ( YEAR(jual_tanggal)='$thn_akhir' AND MONTH(jual_tanggal)='$bln_akhir');");
+		$hsl = $this->db->query("SELECT DATE_FORMAT(jual_tanggal,'%M %Y') AS bulan,d_jual_barang_nama,d_jual_barang_satuan,d_jual_barang_harpok,d_jual_barang_harjul,(d_jual_barang_harjul-d_jual_barang_harpok) AS keunt,d_jual_qty,d_jual_diskon,SUM(((d_jual_barang_harjul-d_jual_barang_harpok)*d_jual_qty)-(d_jual_qty*d_jual_diskon)) AS total FROM tbl_jual JOIN tbl_detail_jual ON jual_nofak=d_jual_nofak WHERE (DATE(jual_tanggal) BETWEEN '$start' AND '$end');");
 		return $hsl;
 	}
 
