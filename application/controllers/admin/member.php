@@ -158,9 +158,13 @@ class Member extends CI_Controller
         } else {
 
             $nama_member = $data_member->nama_user;
+            $nohp_member = $data_member->no_hp_user;
+            $alamat_member = $data_member->alamat;
         }
         $data['no_member'] = $no_member;
         $data['nama_member'] = $nama_member;
+        $data['nohp_member'] = $nohp_member;
+        $data['alamat_member'] = $alamat_member;
         $this->load->view('admin/laporan/v_kartu_member', $data);
     }
 
@@ -202,11 +206,12 @@ class Member extends CI_Controller
                     <td colspan="5">Member Tidak Ada</td>
                 </tr>
             </table>
-        <?php
+<?php
         }
     }
 
-    public function edit_no_hp(){
+    public function edit_no_hp()
+    {
         $no_member = $this->input->post('no_member');
         $no_hp = $this->input->post('no_hp_baru');
 

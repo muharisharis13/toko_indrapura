@@ -121,19 +121,35 @@
                 <div class="item_member d-flex align-items-center" style="margin-top: -160px;">
                     <h3 class="text-center" style="z-index: 100;position:relative;">Member Card Toko Indrapura</h3>
                     <div class="form-inline" style="padding-left:8px;">
-                        <div class="col-sm-4" style="font-weight: bold;margin: 3px 0">
+                        <div class="col-sm-4" style="font-weight: bold;margin: 1px 0">
                             Nama Member
                         </div>
-                        <div class="col-sm-7" style="margin: 3px 0">
+                        <div class="col-sm-7" style="margin: 1px 0">
                             : <span id="nama_member"><?= $nama_member ?></span>
                         </div>
                     </div>
                     <div class="form-inline" style="padding-left:8px;">
-                        <div class="col-sm-4" style="font-weight: bold;margin: 3px 0">
+                        <div class="col-sm-4" style="font-weight: bold;margin: 1px 0">
                             No Member
                         </div>
-                        <div class="col-sm-7" style="margin: 3px 0">
+                        <div class="col-sm-7" style="margin: 1px 0">
                             : <span id="no_member"><?= $no_member ?></span>
+                        </div>
+                    </div>
+                    <div class="form-inline" style="padding-left:8px;">
+                        <div class="col-sm-4" style="font-weight: bold;margin: 1px 0">
+                            No Hp
+                        </div>
+                        <div class="col-sm-7" style="margin: 1px 0">
+                            : <span id="nohp_member"><?= $nohp_member ?></span>
+                        </div>
+                    </div>
+                    <div class="form-inline" style="padding-left:8px;">
+                        <div class="col-sm-4" style="font-weight: bold;margin: 1px 0">
+                            Alamat
+                        </div>
+                        <div class="col-sm-7" style="margin: 2px 0">
+                            : <span id="alamat_member"><?= $alamat_member ?></span>
                         </div>
                     </div>
                     <div class="qrcode-member" style="margin-top: 10px;padding-left:8px;">

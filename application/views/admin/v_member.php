@@ -98,7 +98,7 @@
 
 
                         ?>
-                            <tr onclick="card_member('<?= $item['no_member'] ?>','<?= $item['nama_user'] ?>')">
+                            <tr onclick="card_member('<?= $item['no_member'] ?>','<?= $item['nama_user'] ?>','<?= $item['no_hp_user'] ?>','<?= $item['alamat'] ?>')">
                                 <td>
                                     <?php
                                     echo $item['id']
@@ -223,7 +223,7 @@
 
                         </div>
                         <div class="row" style="margin-top:10px;display:none;" id="no_hp_baru">
-                            <input type="hidden" name="no_member" id="no_member_edit"/>
+                            <input type="hidden" name="no_member" id="no_member_edit" />
                             <div class="col-md-12">
                                 <label>No. Hp Baru - <span id="no_member_lbl"></span></label>
                                 <input type="number" class="form-control" required name="no_hp_baru">
@@ -259,19 +259,35 @@
                         <div class="item_member d-flex align-items-center" style="height: 300px;">
                             <h3 class="text-center" style="z-index: 100;position:relative;">Member Card Toko Indrapura</h3>
                             <div class="row">
-                                <div class="col-sm-3" style="font-weight: bold;margin: 10px 0">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 2px 0">
                                     Nama Member
                                 </div>
-                                <div class="col-sm-8" style="margin: 10px 0">
+                                <div class="col-sm-8" style="margin:2px 0">
                                     : <span id="nama_member"></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" style="font-weight: bold;margin: 10px 0">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 2px 0">
                                     No Member
                                 </div>
-                                <div class="col-sm-8" style="margin: 10px 0">
+                                <div class="col-sm-8" style="margin:2px 0">
                                     : <span id="no_member"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 2px 0">
+                                    No Hp
+                                </div>
+                                <div class="col-sm-8" style="margin:2px 0">
+                                    : <span id="nohp_member"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" style="font-weight: bold;margin: 2px 0">
+                                    Alamat
+                                </div>
+                                <div class="col-sm-8" style="margin:2px 0">
+                                    : <span id="alamat_member"></span>
                                 </div>
                             </div>
                             <div class="qrcode-member" style="margin-top: 2rem;">
@@ -309,9 +325,11 @@
             window.open('<?= base_url('admin/member/print') ?>/' + no_member)
         }
 
-        function card_member(no_member, nama_member) {
+        function card_member(no_member, nama_member, nohp_member, alamat_member) {
             $('#nama_member').text(nama_member)
             $('#no_member').text(no_member)
+            $('#nohp_member').text(nohp_member)
+            $('#alamat_member').text(alamat_member)
 
             var url_qrcode = `http://chart.apis.google.com/chart?cht=qr&chs=130x130&chld=L|0&chl=${no_member}`
             $('#img_member_qrcode').prop('src', url_qrcode)
@@ -341,7 +359,7 @@
             $("#no_member_lbl").text(no_member + " ( selected )")
             $("#no_member_edit").val(no_member)
             $("#no_hp_baru").show()
-            $("#submit_edit_no_hp").attr("disabled",false)
+            $("#submit_edit_no_hp").attr("disabled", false)
         }
 
         function hapus_member(id) {
