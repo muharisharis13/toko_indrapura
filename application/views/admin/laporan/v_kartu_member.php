@@ -119,7 +119,7 @@
             <div class="card-member-container">
                 <img src="<?php echo base_url() . 'assets/images/bg-member.png' ?>" class="img_member" />
                 <div class="item_member d-flex align-items-center" style="margin-top: -160px;">
-                    <h3 class="text-center" style="z-index: 100;position:relative;">Member Card Toko Indrapura</h3>
+                    <h3 class="text-center" style="z-index: 100;position:relative;">Member Card Sumber Jaya</h3>
                     <div class="form-inline" style="padding-left:8px;">
                         <div class="col-sm-4" style="font-weight: bold;margin: 1px 0">
                             Nama Member
